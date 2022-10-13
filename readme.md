@@ -1,4 +1,4 @@
-<strong>可以點選[這裡](https://frankChen0703.github.io/Web3D/index.HTML.html)跳轉到Homework首頁<strong>
+<strong>可以點選[這裡](https://frankChen0703.github.io/Web3D/index.html)跳轉到Homework首頁<strong>
 
 如有任何問題，請發送信件到此信箱：a070320170415@gmail.com
 
