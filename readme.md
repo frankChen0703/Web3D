@@ -4,6 +4,6 @@
 
 各項狀態： ✅：已完成  ⏳：待繳交
 
- ●✅ [Christmas Tree Blinking, bottom](https://frankChen0703.github.io/Web3D/hw1.html)
+ ●✅ [Christmas Tree Blinking, bottom](https://frankChen0703.github.io/Web3D/HW1/hw1.html)
  
  ●⏳ HTML Input & Vector3 API
