@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='bkgd' style="position:absolute; top: 10vh; left: 10vw; width:60vw; height: 60vh;"></div>
+    <div align="center"><h1>I3B54 陳柏逢 Web3D HW1</h1></div>
+    <br>
+    <button id='power'>Power</button>
+    <br>
+    <img src="https://www.emojiall.com/en/header-svg/%E2%AD%90.png" style="position:absolute;top:7vw;left:48vw;width:4vw;z-index:1"/>
+    <img src="https://s.yimg.com/zp/images/C35A01B0F333FB8DC536C631F576CD3B73B82A5C" style="position:absolute;top:25vw;left:48vw;width:3vw;z-index:1"/>
+    
+    <div align="center"><img src="https://m.media-amazon.com/images/I/71ftUzwex5L._AC_SX466_.jpg"></div>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+        var powerOn = false;
+
+        $('#power').click(function () {
+            powerOn = !powerOn;
+
+            if (powerOn === true) {  // false--> true
+                lamps.forEach(function (item) { item.startBlink(); });
+            }
+        });
+
+        class Light {
+
+            constructor(name) {
+                this.name = name + Light.id++;
+                this.myStatus = false;
+
+                let el = document.createElement('div');
+                el.id = this.name;
+
+                let bkgd = document.getElementById('bkgd');
+                bkgd.appendChild(el);
+                this.hue = Math.random() * 360;
+
+                // styles
+                el.setAttribute("style", 'background-color: hsl(0, 0%, 50%); border-radius:15px; width:20px; height:20px; z-index:1');
+                this.left = Math.random() * 0.8;
+                this.top = Math.random() * 0.8;
+                el.style.position = "absolute";
+                el.style.left = this.left * 100 + '%';
+                el.style.top = this.top * 100 + '%';
+            }
+
+            toggle() {
+                this.myStatus = !this.myStatus;
+
+                if (powerOn) {
+                    setTimeout(() => { this.toggle(); }, 500);
+                    lamps.forEach(function (ll) { ll.startBlink(); });
+                }
+                else {
+                    $('#' + this.name).css('backgroundColor', `hsl(0,0%,50%)`);
+                    return;
+                }
+
+                if (this.myStatus === true) {
+                    $('#' + this.name).css('backgroundColor', `hsl(${this.hue},90%,80%)`);
+                } else {
+                    $('#' + this.name).css('backgroundColor', `hsl(${this.hue},90%,24%)`);
+                }
+            }
+
+            startBlink() {
+                var that = this;
+                /*   
+                    setInterval(function() {
+                      that.toggle();
+                    }, 500);
+                */
+                setTimeout(() => { this.toggle(); }, 0);
+
+                //setInterval (that.toggle, 500);   // somehow, it does not work
+            }
+        }
+
+
+        Light.id = 0; // class variable
+        lamps = [];
+
+        for (let i = 0; i < 8; i++) {
+            let ll = new Light('light');
+            lamps.push(ll);
+        }
+        $('#light0').css({ "top": "9vw", "left": "40vw" });
+        $('#light1').css({ "top": "11vw", "left": "42vw" });
+        $('#light2').css({ "top": "13vw", "left": "38vw" });
+        $('#light3').css({ "top": "15vw", "left": "41vw" });
+        $('#light4').css({ "top": "17vw", "left": "39vw" });
+        $('#light5').css({ "top": "19vw", "left": "43vw" });
+        $('#light6').css({ "top": "21vw", "left": "36vw" });
+        $('#light7').css({ "top": "23vw", "left": "45vw" });
+
+
+    </script>
+
+</body>
+
+</html>
