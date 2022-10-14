@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .table {
+        position: absolute;
+        top: 2vw;
+        left: 14vw;
+    }
+
+    .table1 {
+        position: absolute;
+        top: 2vw;
+        left: 1vw;
+    }
+
+    .table2 {
+        position: absolute;
+        top: 10vw;
+        left: 1vw;
+    }
+</style>
+
+<body>
+    <img src="https://png.pngtree.com/png-clipart/20190921/original/pngtree-orange-vector-computer-button-png-image_4736708.jpg" style="position:absolute;top:0vw;left:0vw;width: 100vw;height: 100vh;z-index:-1"/>
+        <div class="table1" style="background:rgb(47, 255, 241)">
+            V vector <br> --------------------------
+            <br>
+            <span>x:</span>
+            <input type='text' id='vx'>
+            <br>
+            <span>y:</span>
+            <input type='text' id='vy'>
+            <br>
+            <span>z:</span>
+            <input type='text' id='vz'>
+            <br>
+        </div>
+        <div class="table2" style="background:rgb(47, 255, 95)">
+            W vector <br> --------------------------
+            <br>
+            <span>x:</span>
+            <input type='text' id='wx'>
+            <br>
+            <span>y:</span>
+            <input type='text' id='wy'>
+            <br>
+            <span>z:</span>
+            <input type='text' id='wz'>
+            <br>
+        </div>
+        <div class="table" style="background:rgb(179, 255, 47)">
+            <br><br>
+            <br>v &bull; w <br>---------------------------
+            <br>v &bull; w =
+            <input type='text' id='vw'>
+            <br>
+            <br>v &times; w <br>---------------------------
+            <br>
+            <span>x:</span>
+            <input type='text' id='vXwx'>
+            <br>
+            <span>y:</span>
+            <input type='text' id='vXwy'>
+            <br>
+            <span>x:</span>
+            <input type='text' id='vXwz'>
+            <br>
+        </div>
+        <button id='cal'> Calculate </button> <br>
+    </div>
+    <script src="https://threejs.org/build/three.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+        var VX, VY, VZ, WX, WY, WZ;
+
+        $('#cal').click(
+            function () {
+                var v = new THREE.Vector3(VX, VY, VZ);
+                var w = new THREE.Vector3(WX, WY, WZ);
+
+                var vdw = v.clone().dot(w);
+                var vXw = new THREE.Vector3();
+                vXw = v.clone().cross(w);
+                $('#vw').val(vdw);
+                $('#vXwx').val(vXw.x);
+                $('#vXwy').val(vXw.y);
+                $('#vXwz').val(vXw.z);
+            }
+        );
+        $('#vx').change(function () {
+            VX = $(this).val();
+        });
+        $('#vy').change(function () {
+            VY = $(this).val();
+        });
+        $('#vz').change(function () {
+            VZ = $(this).val();
+        });
+        $('#wx').change(function () {
+            WX = $(this).val();
+        });
+        $('#wy').change(function () {
+            WY = $(this).val();
+        });
+        $('#wz').change(function () {
+            WZ = $(this).val();
+        });
+
+
+
+
+    </script>
+
+</body>
+
+</html>
