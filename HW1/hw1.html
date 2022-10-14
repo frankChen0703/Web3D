@@ -9,25 +9,28 @@
 </head>
 
 <body>
-    <div style="background:rgb(47, 255, 241)">
-        <div id='bkgd' style="position:absolute; top: 10vh; left: 10vw; width:60vw; height: 60vh;"></div>
-        <div align="center">
-            <h1>I3B54 陳柏逢 Web3D HW1</h1>
+
+    <div id='bkgd'
+        style="position:absolute; top: 10vh; left: 10vw; width:60vw; height: 70vh;background: linear-gradient(to bottom right, rgb(47, 255, 254) ,#b3ffd1); z-index: -5;">
+        <div id="t" style="position:absolute;top:0vw;left:18vw;width:50vw;z-index:1">
+            <h3>I3B54 陳柏逢 Web3D HW1</h3>
+            
         </div>
         <br>
         <button id='power'>Power</button>
         <br>
         <img src="https://github.com/frankChen0703/Web3D/blob/master/HW1/star.png?raw=true"
-            style="position:absolute;top:8vw;left:48vw;width:4vw;z-index:1" />
+            style="position:absolute;top:4vw;left:28vw;width:4vw;z-index:1" />
         <img src="https://github.com/frankChen0703/Web3D/blob/master/HW1/ccc.png?raw=true"
-            style="position:absolute;top:25vw;left:48vw;width:3vw;z-index:1" />
+            style="position:absolute;top:20vw;left:28vw;width:3vw;z-index:1" />
         <img src="https://github.com/frankChen0703/Web3D/blob/master/HW1/pp.png?raw=true"
-            style="position:absolute;top:30vw;left:46vw;width:6vw;z-index:1" />
+            style="position:absolute;top:23vw;left:25vw;width:6vw;z-index:1" />
         <img src="https://github.com/frankChen0703/Web3D/blob/master/HW1/snowman.png?raw=true"
-            style="position:absolute;top:25vw;left:56vw;width:10vw;z-index:1" />
+            style="position:absolute;top:18vw;left:33vw;width:10vw;z-index:1" />
         <img src="https://github.com/frankChen0703/Web3D/blob/master/HW1/gift.png?raw=true"
-            style="position:absolute;top:27vw;left:35vw;width:15vw;z-index:1" />
-        <div align="center"><img src="https://m.media-amazon.com/images/I/71ftUzwex5L._AC_SX466_.jpg"></div>
+            style="position:absolute;top:20vw;left:15vw;width:15vw;z-index:1" />
+        <img src="https://m.media-amazon.com/images/I/71ftUzwex5L._AC_SX466_.jpg"
+            style="position:absolute;top:5vw;left:17vw;width:25vw;z-index:0" />
         <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
         <script>
             var powerOn = false;
@@ -66,7 +69,7 @@
                     this.myStatus = !this.myStatus;
 
                     if (powerOn) {
-                        setTimeout(() => { this.toggle(); }, 500);
+                        setTimeout(() => { this.toggle(); }, 600);
                         lamps.forEach(function (ll) { ll.startBlink(); });
                     }
                     else {
@@ -88,7 +91,7 @@
                           that.toggle();
                         }, 500);
                     */
-                    setTimeout(() => { this.toggle(); }, 0);
+                    setTimeout(() => { this.toggle(); }, 1000);
 
                     //setInterval (that.toggle, 500);   // somehow, it does not work
                 }
@@ -102,18 +105,17 @@
                 let ll = new Light('light');
                 lamps.push(ll);
             }
-            $('#light0').css({ "top": "9vw", "left": "40vw" });
-            $('#light1').css({ "top": "11vw", "left": "42vw" });
-            $('#light2').css({ "top": "13vw", "left": "38vw" });
-            $('#light3').css({ "top": "15vw", "left": "41vw" });
-            $('#light4').css({ "top": "17vw", "left": "39vw" });
-            $('#light5').css({ "top": "19vw", "left": "43vw" });
-            $('#light6').css({ "top": "21vw", "left": "36vw" });
-            $('#light7').css({ "top": "23vw", "left": "45vw" });
+            $('#light0').css({ "top": "9vw", "left": "30vw" });
+            $('#light1').css({ "top": "11vw", "left": "29vw" });
+            $('#light2').css({ "top": "13vw", "left": "31vw" });
+            $('#light3').css({ "top": "15vw", "left": "28vw" });
+            $('#light4').css({ "top": "17vw", "left": "32vw" });
+            $('#light5').css({ "top": "19vw", "left": "27vw" });
+            $('#light6').css({ "top": "21vw", "left": "33vw" });
+            $('#light7').css({ "top": "23vw", "left": "26vw" });
 
 
         </script>
-    </div>
 </body>
 
 </html>
