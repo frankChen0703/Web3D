@@ -79,7 +79,7 @@
                 toggle() {
                     this.myStatus = !this.myStatus;
                     if (powerOn === true) {
-                        setTimeout(() => { this.toggle(); }, getRandom(1, 2) * 600);
+                        setTimeout(() => { this.toggle(); }, getRandom(1, 2) * 800);
                     }
                     else {
                         $('#' + this.name).css('backgroundColor', `hsl(0,0%,50%)`);
@@ -87,15 +87,15 @@
                     }
 
                     if (this.myStatus === true) {
-                        $('#' + this.name).css('backgroundColor', `hsl(${this.hue},90%,80%)`);
+                        $('#' + this.name).css('backgroundColor', `hsl(${this.hue},90%,90%)`);
                     } else {
-                        $('#' + this.name).css('backgroundColor', `hsl(${this.hue},90%,24%)`);
+                        $('#' + this.name).css('backgroundColor', `hsl(${this.hue},90%,20%)`);
                     }
                 }
 
                 startBlink() {
                     var that = this;
-                    setTimeout(() => { this.toggle(); }, 1000);
+                    setTimeout(() => { this.toggle(); }, 800);
 
                     //setInterval (that.toggle, 500);   // somehow, it does not work
                 }
