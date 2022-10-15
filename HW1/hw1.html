@@ -11,7 +11,6 @@
         h1 {
             font-size: 20px;
         }
-
     </style>
 </head>
 
@@ -50,6 +49,10 @@
                 }
             });
 
+            function getRandom(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            };
+
             class Light {
 
                 constructor(name) {
@@ -63,6 +66,7 @@
                     bkgd.appendChild(el);
                     this.hue = Math.random() * 360;
 
+
                     // styles
                     el.setAttribute("style", 'background-color: hsl(0, 0%, 50%); border-radius:15px; width:20px; height:20px; z-index:1');
                     this.left = Math.random() * 0.8;
@@ -74,10 +78,8 @@
 
                 toggle() {
                     this.myStatus = !this.myStatus;
-
-                    if (powerOn) {
-                        setTimeout(() => { this.toggle(); }, 600);
-                        lamps.forEach(function (ll) { ll.startBlink(); });
+                    if (powerOn === true) {
+                        setTimeout(() => { this.toggle(); }, getRandom(1, 2) * 600);
                     }
                     else {
                         $('#' + this.name).css('backgroundColor', `hsl(0,0%,50%)`);
@@ -93,11 +95,6 @@
 
                 startBlink() {
                     var that = this;
-                    /*   
-                        setInterval(function() {
-                          that.toggle();
-                        }, 500);
-                    */
                     setTimeout(() => { this.toggle(); }, 1000);
 
                     //setInterval (that.toggle, 500);   // somehow, it does not work
