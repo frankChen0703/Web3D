@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>HTML Input & Vector3 API</title>
 </head>
 <style>
     .table {
@@ -28,11 +28,12 @@
 </style>
 
 <body>
-     
-    <img src="https://png.pngtree.com/png-clipart/20190921/original/pngtree-orange-vector-computer-button-png-image_4736708.jpg" 
-        style="position:absolute;top:0vw;left:0vw;width: 100vw;height: 100vh;z-index:-1"/>
+    <div id='bkgd'
+        style="position:absolute;width:1000vw; z-index: -5">
+        <img src="https://png.pngtree.com/png-clipart/20190921/original/pngtree-orange-vector-computer-button-png-image_4736708.jpg"
+            style="position:absolute;top:0vw;left:0vw;width: 100vw;height: 100vh;z-index:-1" />
         <button id='cal'> Calculate </button>
-        <div class="table1" style="background:rgb(47, 255, 241); position:absolute ;top:2vw;left:0vw;width:12vw;height:23vh;z-index:1">
+        <div class="table1" style="background:rgb(47, 255, 241);z-index:1">
             V vector <br> --------------------------
             <br>
             <span>x:</span>
@@ -45,7 +46,7 @@
             <input type='text' id='vz'>
             <br>
         </div>
-        <div class="table2" style="background:rgb(47, 255, 95); position:absolute ;top:14vw;left:0vw;width:12vw;height:23vh;z-index:1">
+        <div class="table2" style="background:rgb(47, 255, 95);z-index:1">
             W vector <br> --------------------------
             <br>
             <span>x:</span>
@@ -58,7 +59,7 @@
             <input type='text' id='wz'>
             <br>
         </div>
-        <div class="table" style="background:rgb(179, 255, 47); position:absolute ;top:2vw;left:13vw;width:12vw;height:45vh;z-index:1">
+        <div class="table" style="background:rgb(179, 255, 47); z-index:1">
             <br><br>
             <br>v &bull; w <br>---------------------------
             <br>v &bull; w =
@@ -76,7 +77,7 @@
             <input type='text' id='vXwz'>
             <br>
         </div>
-        
+
     </div>
     <script src="https://threejs.org/build/three.min.js"></script>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
