@@ -8,6 +8,12 @@
     <title>hw3</title>
 </head>
 
+<div id="info">Web3D HW3 室內設計模型 1
+    <br>
+    <button id='switch'>using ORBIT
+    </button>
+</div>
+
 <style>
     #info {
         position: absolute;
@@ -25,9 +31,19 @@
 
 <body>
     <script src="https://threejs.org/build/three.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://jyunming-chen.github.io/tutsplus/js/KeyboardState.js"></script>
     <script>
         var camera, scene, renderer;
+        var cameraHelper
+        var cameraoverlook, useoverlook = false
+
+        $('#switch').click(function () {
+            useoverlook = !useoverlook;
+            if (useoverlook) $('#switch').text('using OVERLOOK')
+            else $('#switch').text('using ORBIT')
+        })
 
         init();
         animate();
@@ -41,70 +57,258 @@
             renderer.setClearColor(0x888888);
             document.body.appendChild(renderer.domElement);
 
-            camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
-            camera.position.y = 1000;
-            camera.position.z = 0; // camera at (0,0,500)
+            camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 5000);
+            camera.position.z = 500; // camera at (0,0,500)
             let controls = new THREE.OrbitControls(camera, renderer.domElement);
+            cameraovwelook = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 1, 1000);
+            cameraHelper = makeCameraHelper();
 
             ////////////////////////////////////////////////////////
-            var gridXZ = new THREE.GridHelper(1000, 20, 'red', 'white');
-            scene.add(gridXZ);
+            /*var gridXZ = new THREE.GridHelper(1300, 20, 'red', 'white');
+            scene.add(gridXZ);*/
+            var woodTex = new THREE.TextureLoader().load("https://i.imgur.com/DrvlmNW.jpg?1");
+            var mat = new THREE.MeshLambertMaterial({
+                map: woodTex
+            });
+            var floor = new THREE.Mesh(new THREE.PlaneGeometry(1300, 1300), mat);
+            floor.rotation.x = -Math.PI / 2;
+            scene.add(floor);
 
-            const pointLight = new THREE.PointLight(0xffffff, 3);
-            pointLight.position.set(0, 150, 0);
-            scene.add(pointLight);
+            //nuture light
+            var nuturepointLight1 = buildlight(500, Math.PI / 2, 1);
+            nuturepointLight1.position.set(0, 500, 0);
+            scene.add(nuturepointLight1);
+            var nuturepointLight2 = buildlight(10000, Math.PI / 2, 1);
+            nuturepointLight2.position.set(1300, 500, 1300);
+            scene.add(nuturepointLight2);
+            var nuturepointLight3 = buildlight(10000, Math.PI / 2, 1);
+            nuturepointLight3.position.set(-1300, 500, -1300);
+            scene.add(nuturepointLight3);
+            //var spotLight = buildlight(0, Math.PI/6, 0.3);
+            //scene.add(spotLight);
 
-            const sphereSize = 1;
-            const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
-            scene.add(pointLightHelper);
+            //wall position
+            var wall1 = buildwall(1300, 300, 10);
+            wall1.position.set(0, 150, -645);
+            var wall2 = buildwall(1300, 300, 10);
+            wall2.position.set(0, 150, 645);
+            var wall3 = buildwall(10, 300, 1100);
+            wall3.position.set(645, 150, -100);
+            var wall4 = buildwall(10, 300, 1300);
+            wall4.position.set(-645, 150, 0);
+            var wall5 = buildwall(370, 300, 10);
+            wall5.position.set(-465, 150, -145);
+            var wall6 = buildwall(670, 300, 10);
+            wall6.position.set(-315, 150, 145);
+            var wall7 = buildwall(670, 300, 10);
+            wall7.position.set(185, 150, -145);
+            var wall8 = buildwall(10, 300, 370);
+            wall8.position.set(-145, 150, -335);
+            var wall9 = buildwall(10, 300, 370);
+            wall9.position.set(145, 150, -465);
+            var wall10 = buildwall(10, 300, 370);
+            wall10.position.set(-350, 150, 465);
+            var wall11 = buildwall(10, 300, 500);
+            wall11.position.set(250, 150, 400);
+            scene.add(wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8, wall9, wall10, wall11);
 
-            var paste = buildpaste(500);
-            scene.add(paste);
-            var chair = buildChair();
-            var chair1 = chair.clone();
-            //chair1.position.set(50, 0, 70);
-            var chair2 = chair.clone();
-            chair2.position.set(-50, 0, -70);
-            chair2.rotation.y = Math.PI / 2;
-            //scene.add(chair1, chair2);
+            //chair position
+            var chair1 = buildChair();
+            chair1.position.set(-525, 0, 350);
+            var chair2 = buildChair();
+            chair2.position.set(-525, 0, 550);
+            var chair3 = buildChair();
+            chair3.position.set(-150, 0, 550);
+            var chair4 = buildChair();
+            chair4.position.set(400, 0, -550);
+            var chair5 = buildChair();
+            chair5.position.set(-450, 0, -500);
+            var chair6 = buildChair();
+            chair6.position.set(70, 0, 550);
+            var chair7 = buildChair();
+            chair7.rotation.y = Math.PI / 2;
+            chair7.position.set(0, 0, -400);
+            var chair8 = buildChair();
+            chair8.rotation.y = Math.PI / 2;
+            chair8.position.set(-550, 0, -400);
+            var chair9 = buildChair();
+            chair9.rotation.y = Math.PI / 2;
+            chair9.position.set(-350, 0, -400);
+            var chair10 = buildChair();
+            chair10.rotation.y = Math.PI / 2;
+            chair10.position.set(300, 0, -400);
+            var chair11 = buildChair();
+            chair11.rotation.y = Math.PI / 2;
+            chair11.position.set(500, 0, -400);
+            var chair12 = buildChair();
+            chair12.rotation.y = Math.PI / 2;
+            chair12.position.set(-250, 0, 400);
+            var chair13 = buildChair();
+            chair13.rotation.y = Math.PI / 2;
+            chair13.position.set(150, 0, 400);
+            scene.add(chair1, chair2, chair3, chair4, chair5, chair6, chair7, chair8, chair9, chair10, chair11, chair12, chair13);
 
-            //scene.add(chair);
+            //paint position
+            var paint1 = buildpaint('https://i.imgur.com/GASakSo.jpg', 120, 120)
+            paint1.position.set(0, 150, -638);
+            var paint2 = buildpaint('https://lh6.ggpht.com/HlgucZ0ylJAfZgusynnUwxNIgIp5htNhShF559x3dRXiuy_UdP3UQVLYW6c', 120, 120)
+            paint2.position.set(400, 150, -638);
+            var paint3 = buildpaint('https://ichef.bbci.co.uk/news/640/cpsprodpb/34A6/production/_106187431_vincent-van-gogh---starry-n.jpg', 120, 120)
+            paint3.position.set(-400, 150, -638);
+            var paint4 = buildpaint('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/270px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg', 120, 120)
+            paint4.position.set(-450, 150, -138);
+            var paint5 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqkaoVUVQX56eYEtRkPi85vieYulnFP_FfoQ&usqp=CAU', 120, 120)
+            paint5.position.set(180, 150, -138);
+            var paint6 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbjgnFbRTLEyB2GS1SNDyuwey8pth1zL-_YA&usqp=CAU', 120, 120)
+            paint6.position.set(-500, 150, 157);
+            var paint7 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQUZz1y_249N7tFAhjEA2Qz4mSEhdX82oxLA&usqp=CAU', 120, 120)
+            paint7.rotation.y = Math.PI / 2;
+            paint7.position.set(-638, 150, 0);
+            var paint8 = buildpaint('https://pic.616pic.com/bg_w1180/00/17/12/QGKdk1vKFv.jpg', 120, 120)
+            paint8.rotation.y = Math.PI / 2;
+            paint8.position.set(-638, 150, 400);
+            var paint9 = buildpaint('https://bnextmedia.s3.hicloud.net.tw/image/album/2022-09/img-1662373463-50156.jpg', 120, 120)
+            paint9.rotation.y = Math.PI / 2;
+            paint9.position.set(-638, 150, -400);
+            var paint10 = buildpaint('https://pic.616pic.com/bg_w1180/00/09/23/DCYI3TIknP.jpg', 120, 120)
+            paint10.rotation.y = Math.PI / 2;
+            paint10.position.set(-333, 150, 480);
+            var paint11 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH7P00wEcDuZLGK4hlZa7pNMQLbWVIpK9KpakkEjoOLJgJQQ86ycKkNT_gem-nnVBz44Q&usqp=CAU', 120, 120)
+            paint11.rotation.y = Math.PI / 2;
+            paint11.position.set(-138, 150, -350);
+            var paint12 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoFt5Db1QIKFwRvX8GLNFh9B-dcJNZzjCLLGivsvikESvlclUu-IIMRp-CQA42fT0DtDQ&usqp=CAU', 120, 120)
+            paint12.rotation.y = Math.PI / 2;
+            paint12.position.set(152, 150, -450);
+            var paint13 = buildpaint('https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/%E5%9D%90%E5%9C%A8%E7%AA%97%E9%82%8A%E7%9A%84%E5%A5%B3%E4%BA%BA-1618326685.jpg?crop=0.379xw:0.759xh;0.00326xw,0.0130xh&resize=640:*', 120, 120)
+            paint13.rotation.y = Math.PI;
+            paint13.position.set(0, 150, -155);
+            var paint14 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB5y5SxT1y2U4B-KIS4Zj_Pa6nwDASyhpNxg&usqp=CAU', 120, 120)
+            paint14.rotation.y = Math.PI;
+            paint14.position.set(350, 150, -155);
+            var paint15 = buildpaint('https://i.imgur.com/p8CRm9W.jpg', 120, 120)
+            paint15.rotation.y = Math.PI;
+            paint15.position.set(-450, 150, -155);
+            var paint16 = buildpaint('https://dza2a2ql7zktf.cloudfront.net/binaries-cdn/dqzqcuqf9/image/fetch/ar_16:10,q_auto,dpr_auto,c_fill,f_auto,w_412/https://d2u3kfwd92fzu7.cloudfront.net/asset/cms/Art_Basel_Hong_Kong_2022_Conversations-1.jpg', 120, 120)
+            paint16.rotation.y = Math.PI;
+            paint16.position.set(-50, 150, 638);
+            var paint17 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjtabPG8rfFQB0YGR6EXl5kHp-7VG46Jh1KA&usqp=CAU', 120, 120)
+            paint17.rotation.y = Math.PI;
+            paint17.position.set(-500, 150, 638);
+            var paint18 = buildpaint('https://p1-tt.byteimg.com/origin/471d00002f2fb2b40b9f', 120, 120)
+            paint18.rotation.y = Math.PI;
+            paint18.position.set(-300, 150, 138);
+            var paint19 = buildpaint('https://img.lovepik.com/background/20211022/small/lovepik-abstract-artistic-background-image_500868317.jpg', 120, 120)
+            paint19.rotation.y = (Math.PI * 3) / 2;
+            paint19.position.set(638, 150, -400);
+            var paint20 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2ZrVhEARBN_ie6AzoeOi7Ru95_SKRev5w9i8xiE09zdNDmC_pax6r5rgDtd7k9eQwUTg&usqp=CAU', 120, 120)
+            paint20.rotation.y = (Math.PI * 3) / 2;
+            paint20.position.set(138, 150, -400);
+            var paint21 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB8N-vARvr9gx8QgnAN4iiJvByENxu-TfgHcLIMBeFlviuq2hX9wHl_mRuUHkxwAsWdpg&usqp=CAU', 120, 120)
+            paint21.rotation.y = (Math.PI * 3) / 2;
+            paint21.position.set(-152, 150, -400);
+            var paint22 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSn1OwHPCq4AZBSOQnwKpmdrssAC20Qiot89w&usqp=CAU', 120, 120)
+            paint22.rotation.y = (Math.PI * 3) / 2;
+            paint22.position.set(243, 150, 400);
+            var paint23 = buildpaint('https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2022/11/02/0/19126130.jpg&x=0&y=0&sw=0&sh=0&sl=W&fw=1050', 120, 120)
+            paint23.rotation.y = (Math.PI * 3) / 2;
+            paint23.position.set(-358, 150, 480);
+            scene.add(paint1, paint2, paint3, paint4, paint5, paint6, paint7, paint8, paint9, paint10, paint11, paint12, paint13, paint14, paint15, paint16, paint17, paint18, paint19, paint20, paint21, paint22, paint23);
+
+            //裝置藝術
+            const geometry = new THREE.TorusKnotGeometry(50, 15, 100, 16);
+            const material = new THREE.MeshPhongMaterial({
+                color: 0xffff00
+            });
+            torusKnot = new THREE.Mesh(geometry, material);
+            torusKnot.position.set(-70, 100, 400)
+            scene.add(torusKnot);
+            /* spotLight.target = paint1;
+           
+             var lampGroup = new THREE.Group();
+             var lamp = new THREE.Mesh(new THREE.CylinderGeometry(5, 5, 20, 20), new THREE.MeshNormalMaterial());
+             lamp.rotation.x = Math.PI / 2;
+             lamp.position.set(0, 0, 10);
+             lampGroup.add(lamp, new THREE.AxesHelper(60));
+             scene.add(lampGroup);
+             lampGroup.position.copy(spotLight.position);
+             lampGroup.lookAt(paint1.position);*/
+        }
+
+        function buildwall(x, y, z) {
+            var wall = new THREE.Mesh(new THREE.BoxGeometry(x, y, z), new THREE.MeshPhongMaterial());
+            return wall;
+
         }
 
         function buildChair() {
             var group = new THREE.Group();
-            var woodTex = new THREE.TextureLoader().load("https://i.imgur.com/DrvlmNW.jpg?1");
+            var woodTex = new THREE.TextureLoader().load("http://pic.pimg.tw/jasonfixpc/4be37765d8049.jpg?v=1273198438");
+            //var woodTex = new THREE.TextureLoader().load("https://i.imgur.com/DrvlmNW.jpg?1");
             var mat = new THREE.MeshLambertMaterial({
                 map: woodTex
             });
-            var boxTop = new THREE.Mesh(new THREE.BoxGeometry(60, 10, 30), mat);
+            var boxTop = new THREE.Mesh(new THREE.BoxGeometry(120, 10, 30), mat);
             var boxLeg1 = new THREE.Mesh(new THREE.BoxGeometry(10, 20, 30), mat);
             var boxLeg2 = new THREE.Mesh(new THREE.BoxGeometry(10, 20, 30), mat);
             boxTop.position.set(0, 25, 0);
-            boxLeg1.position.set(-25, 10, 0);
-            boxLeg2.position.set(25, 10, 0);
+            boxLeg1.position.set(-55, 10, 0);
+            boxLeg2.position.set(55, 10, 0);
             group.add(boxTop, boxLeg1, boxLeg2);
             return group;
         }
 
-        function buildpaste(x,y=600,z=10) {
+        function buildlight(dis, angle, light) {
             var group = new THREE.Group();
-            var woodTex = new THREE.TextureLoader().load("https://i.imgur.com/DrvlmNW.jpg?1");
-            var mat = new THREE.MeshLambertMaterial({
-                map: woodTex
-            });
-            var paste= new THREE.Mesh(new THREE.BoxGeometry(x, y, z), mat);
-            group.add(paste);
+            const spotLight = new THREE.SpotLight(0xffffff, 1, dis, angle, light);
+            //const spotLightHelper = new THREE.SpotLightHelper(spotLight);
+            group.add(spotLight, /*spotLightHelper*/);
             return group;
         }
 
+        function makeCameraHelper() {
+            var cameraModel = new THREE.Group();
+            var body = new THREE.Mesh(new THREE.BoxGeometry(5, 6, 3), new THREE.MeshNormalMaterial());
+            cameraModel.add(body);
+
+            return cameraModel;
+        }
+
+        function buildpaint(c, x, y) {
+            var group = new THREE.Group();
+            let loader = new THREE.TextureLoader();
+            let capMap = loader.load(c);
+            var painting = new THREE.Mesh(new THREE.PlaneGeometry(x, y), new THREE.MeshBasicMaterial({
+                map: capMap
+            }));
+            let frameMap = loader.load('https://pic.616pic.com/ys_img/00/17/18/pFJlDuGuZf.jpg');
+            var frame = new THREE.Mesh(new THREE.PlaneGeometry(150, 150), new THREE.MeshBasicMaterial({
+                map: frameMap,
+                transparent: true
+            }));
+            painting.position.set(0, 0, 5);
+            frame.position.set(0, 0, 0);
+            group.add(painting, frame);
+            return group;
+        }
 
         function animate() {
 
             requestAnimationFrame(animate);
+            /*var thirdPos = new THREE.Vector3(0, 600, 0)
+            var thirdAt = new THREE.Vector3(0, 0, 0)
+            cameraoverlook.position.copy(thirdPos);
+            cameraoverlook.lookAt(thirdAt);
+          
+            cameraHelper.position.copy(cameraoverlook.position);
+            cameraHelper.quaternion.copy(cameraoverlook.quaternion);
+          
+            if (useoverlook)
+              renderer.render(scene, cameraoverlook);
+            else*/
             renderer.render(scene, camera);
 
         }
+
 
     </script>
 </body>

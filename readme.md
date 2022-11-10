@@ -7,3 +7,5 @@
  ●✅ [Christmas Tree Blinking, bottom](https://frankChen0703.github.io/Web3D/HW1/hw1.html)
  
  ●✅ [HTML Input & Vector3 API, bottom](https://frankChen0703.github.io/Web3D/HW2/hw2.html)
+
+ ●✅ [室內設計模型 1](https://frankChen0703.github.io/Web3D/HW3/hw3.html)
