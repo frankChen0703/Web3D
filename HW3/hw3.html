@@ -8,7 +8,10 @@
     <title>hw3</title>
 </head>
 
-<div id="info">Web3D HW3 室內設計模型 1
+<div id="info">Web3D HW model
+    <br>
+    Adjust the brightness of the lights
+    <input type=range min=50 max=200 id='light'>
     <br>
     <button id='switch'>using ORBIT
     </button>
@@ -36,8 +39,44 @@
     <script src="https://jyunming-chen.github.io/tutsplus/js/KeyboardState.js"></script>
     <script>
         var camera, scene, renderer;
+        var spotLight;
         var cameraHelper
         var cameraoverlook, useoverlook = false
+        var lightcheck = true,
+            x;
+        var brightcontrols;
+
+        class Light {
+            constructor(x, y, z, painting) {
+                // lighting 
+
+                this.spotLight = new THREE.SpotLight(0xffffff, brightcontrols, 300, Math.PI / 6, 1);
+                this.spotLight.position.set(x, y, z);
+                this.spotLight.target = painting;
+                scene.add(this.spotLight);
+                // lampGroup
+                var lampGroup = new THREE.Group();
+                var lamp = new THREE.Mesh(new THREE.CylinderGeometry(5, 5, 20, 20), new THREE.MeshLambertMaterial());
+                lamp.rotation.x = Math.PI / 2;
+                lamp.position.set(0, 0, 10);
+                lampGroup.add(lamp);
+                scene.add(lampGroup);
+                lampGroup.position.copy(this.spotLight.position);
+                lampGroup.lookAt(painting.position);
+            }
+            change(value) {
+                this.spotLight.intensity = value;
+            }
+        }
+
+        $('#light').change(function () {
+            brightness = ($(this).val()) / 100;
+            console.log(brightness);
+            lamps.forEach(function (item) {
+                item.change(brightness);
+            });
+        })
+
 
         $('#switch').click(function () {
             useoverlook = !useoverlook;
@@ -60,12 +99,16 @@
             camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 5000);
             camera.position.z = 500; // camera at (0,0,500)
             let controls = new THREE.OrbitControls(camera, renderer.domElement);
-            cameraovwelook = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 1, 1000);
+            cameraoverlook = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 1500);
             cameraHelper = makeCameraHelper();
+            scene.add(cameraHelper);
+            cameraoverlook.position.set(0, 800, 600);
+            cameraoverlook.lookAt(0, 0, 0);
+
 
             ////////////////////////////////////////////////////////
-            /*var gridXZ = new THREE.GridHelper(1300, 20, 'red', 'white');
-            scene.add(gridXZ);*/
+
+            //floor
             var woodTex = new THREE.TextureLoader().load("https://i.imgur.com/DrvlmNW.jpg?1");
             var mat = new THREE.MeshLambertMaterial({
                 map: woodTex
@@ -74,18 +117,6 @@
             floor.rotation.x = -Math.PI / 2;
             scene.add(floor);
 
-            //nuture light
-            var nuturepointLight1 = buildlight(500, Math.PI / 2, 1);
-            nuturepointLight1.position.set(0, 500, 0);
-            scene.add(nuturepointLight1);
-            var nuturepointLight2 = buildlight(10000, Math.PI / 2, 1);
-            nuturepointLight2.position.set(1300, 500, 1300);
-            scene.add(nuturepointLight2);
-            var nuturepointLight3 = buildlight(10000, Math.PI / 2, 1);
-            nuturepointLight3.position.set(-1300, 500, -1300);
-            scene.add(nuturepointLight3);
-            //var spotLight = buildlight(0, Math.PI/6, 0.3);
-            //scene.add(spotLight);
 
             //wall position
             var wall1 = buildwall(1300, 300, 10);
@@ -111,6 +142,24 @@
             var wall11 = buildwall(10, 300, 500);
             wall11.position.set(250, 150, 400);
             scene.add(wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8, wall9, wall10, wall11);
+
+            //nuture light
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.3);
+            var directionalLight1 = directionalLight.clone();
+            var directionalLight2 = directionalLight.clone();
+            var directionalLight3 = directionalLight.clone();
+            var directionalLight4 = directionalLight.clone();
+            var directionalLight5 = directionalLight.clone();
+            directionalLight1.position.set(-1500, 310, 0);
+            directionalLight1.target = wall4;
+            directionalLight2.position.set(1500, 310, 0);
+            directionalLight2.target = wall2;
+            directionalLight3.position.set(0, 310, 1500)
+            directionalLight3.target = wall1;
+            directionalLight4.position.set(0, 310, -1500);
+            directionalLight4.target = wall3;
+            directionalLight5.position.set(0, 350, 0);
+            scene.add(directionalLight1, directionalLight2, directionalLight3, directionalLight4, directionalLight5);
 
             //chair position
             var chair1 = buildChair();
@@ -214,24 +263,47 @@
             paint23.position.set(-358, 150, 480);
             scene.add(paint1, paint2, paint3, paint4, paint5, paint6, paint7, paint8, paint9, paint10, paint11, paint12, paint13, paint14, paint15, paint16, paint17, paint18, paint19, paint20, paint21, paint22, paint23);
 
-            //裝置藝術
+            // picture lamp
+            var light1 = new Light(0, 300, -500, paint1);
+            var light2 = new Light(400, 300, -500, paint2);
+            var light3 = new Light(-400, 300, -500, paint3)
+            var light4 = new Light(-450, 300, 0, paint4);
+            var light5 = new Light(180, 300, 0, paint5);
+            var light6 = new Light(-500, 300, 295, paint6);
+            var light7 = new Light(-500, 300, 0, paint7);
+            var light8 = new Light(-500, 300, 400, paint8);
+            var light9 = new Light(-500, 300, -400, paint9);
+            var light10 = new Light(-138, 300, 480, paint10);
+            var light11 = new Light(0, 300, -350, paint11);
+            var light12 = new Light(290, 300, -450, paint12);
+            var light13 = new Light(0, 300, -293, paint13);
+            var light14 = new Light(350, 300, -293, paint14);
+            var light15 = new Light(-450, 300, -293, paint15);
+            var light16 = new Light(-50, 300, 500, paint16);
+            var light17 = new Light(-500, 300, 500, paint17);
+            var light18 = new Light(-300, 300, 0, paint18);
+            var light19 = new Light(500, 300, -400, paint19);
+            var light20 = new Light(0, 300, -400, paint20);
+            var light21 = new Light(-290, 300, -400, paint21);
+            var light22 = new Light(105, 300, 400, paint22);
+            var light23 = new Light(-496, 300, 480, paint23);
+
+            lamps = [];
+            lamps.push(light1, light2, light3, light4, light5, light6, light7, light8, light9, light10, light11, light12, light13, light14, light15, light16, light17, light18, light19, light20, light21, light22, light23);
+
+            //Installation art
             const geometry = new THREE.TorusKnotGeometry(50, 15, 100, 16);
             const material = new THREE.MeshPhongMaterial({
-                color: 0xffff00
+                color: 0x77DDFF
             });
             torusKnot = new THREE.Mesh(geometry, material);
-            torusKnot.position.set(-70, 100, 400)
-            scene.add(torusKnot);
-            /* spotLight.target = paint1;
-           
-             var lampGroup = new THREE.Group();
-             var lamp = new THREE.Mesh(new THREE.CylinderGeometry(5, 5, 20, 20), new THREE.MeshNormalMaterial());
-             lamp.rotation.x = Math.PI / 2;
-             lamp.position.set(0, 0, 10);
-             lampGroup.add(lamp, new THREE.AxesHelper(60));
-             scene.add(lampGroup);
-             lampGroup.position.copy(spotLight.position);
-             lampGroup.lookAt(paint1.position);*/
+            torusKnot.position.set(-70, 110, 400);
+            var base = new THREE.Mesh(new THREE.BoxGeometry(50, 20, 50), new THREE.MeshBasicMaterial({
+                color: 0x77DDFF
+            }));
+            base.position.set(-70, 20, 400);
+            scene.add(torusKnot, base);
+
         }
 
         function buildwall(x, y, z) {
@@ -243,7 +315,6 @@
         function buildChair() {
             var group = new THREE.Group();
             var woodTex = new THREE.TextureLoader().load("http://pic.pimg.tw/jasonfixpc/4be37765d8049.jpg?v=1273198438");
-            //var woodTex = new THREE.TextureLoader().load("https://i.imgur.com/DrvlmNW.jpg?1");
             var mat = new THREE.MeshLambertMaterial({
                 map: woodTex
             });
@@ -254,14 +325,6 @@
             boxLeg1.position.set(-55, 10, 0);
             boxLeg2.position.set(55, 10, 0);
             group.add(boxTop, boxLeg1, boxLeg2);
-            return group;
-        }
-
-        function buildlight(dis, angle, light) {
-            var group = new THREE.Group();
-            const spotLight = new THREE.SpotLight(0xffffff, 1, dis, angle, light);
-            //const spotLightHelper = new THREE.SpotLightHelper(spotLight);
-            group.add(spotLight, /*spotLightHelper*/);
             return group;
         }
 
@@ -294,18 +357,13 @@
         function animate() {
 
             requestAnimationFrame(animate);
-            /*var thirdPos = new THREE.Vector3(0, 600, 0)
-            var thirdAt = new THREE.Vector3(0, 0, 0)
-            cameraoverlook.position.copy(thirdPos);
-            cameraoverlook.lookAt(thirdAt);
-          
             cameraHelper.position.copy(cameraoverlook.position);
             cameraHelper.quaternion.copy(cameraoverlook.quaternion);
-          
-            if (useoverlook)
-              renderer.render(scene, cameraoverlook);
-            else*/
-            renderer.render(scene, camera);
+            if (useoverlook) {
+                renderer.render(scene, cameraoverlook);
+            } else {
+                renderer.render(scene, camera);
+            }
 
         }
 
