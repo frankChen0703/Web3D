@@ -13,8 +13,33 @@
     Adjust the brightness of the lights
     <input type=range min=100 max=2000 id='light'>
     <br>
-    <button id='switch'>using ORBIT
-    </button>
+    <select id='method'>
+        <option value='sol0'>ORBIT</option>
+        <option value='sol24'>OVERLOOK</option>
+        <option value='sol1'>paint1</option>
+        <option value='sol2'>paint2</option>
+        <option value='sol3'>paint3</option>
+        <option value='sol4'>paint4</option>
+        <option value='sol5'>paint5</option>
+        <option value='sol6'>paint6</option>
+        <option value='sol7'>paint7</option>
+        <option value='sol8'>paint8</option>
+        <option value='sol9'>paint9</option>
+        <option value='sol10'>paint10</option>
+        <option value='sol11'>paint11</option>
+        <option value='sol12'>paint12</option>
+        <option value='sol13'>paint13</option>
+        <option value='sol14'>paint14</option>
+        <option value='sol15'>paint15</option>
+        <option value='sol16'>paint16</option>
+        <option value='sol17'>paint17</option>
+        <option value='sol18'>paint18</option>
+        <option value='sol19'>paint19</option>
+        <option value='sol20'>paint20</option>
+        <option value='sol21'>paint21</option>
+        <option value='sol22'>paint22</option>
+        <option value='sol23'>paint23</option>
+    </select>
 </div>
 
 <style>
@@ -45,6 +70,8 @@
         var lightcheck = true,
             x;
         var brightcontrols;
+        var strategy = 'sol0';
+        var look1, look2, look3, look4, look5, look6, look7, look8, look9, look10, look11, look12, look13, look14, look15, look16, look17, look18, look19, look20, look21, look22, look23
 
         class Light {
             constructor(x, y, z, painting) {
@@ -71,18 +98,14 @@
 
         $('#light').change(function () {
             brightness = ($(this).val()) / 1000;
-            console.log(brightness);
             lamps.forEach(function (item) {
                 item.change(brightness);
             });
         })
 
-
-        $('#switch').click(function () {
-            useoverlook = !useoverlook;
-            if (useoverlook) $('#switch').text('using OVERLOOK')
-            else $('#switch').text('using ORBIT')
-        })
+        $("#method").change(function () {
+            strategy = $('#method option:selected').val();
+        });
 
         init();
         animate();
@@ -100,8 +123,6 @@
             camera.position.z = 500; // camera at (0,0,500)
             let controls = new THREE.OrbitControls(camera, renderer.domElement);
             cameraoverlook = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 1500);
-            cameraHelper = makeCameraHelper();
-            scene.add(cameraHelper);
             cameraoverlook.position.set(0, 800, 600);
             cameraoverlook.lookAt(0, 0, 0);
 
@@ -150,13 +171,13 @@
             var directionalLight3 = directionalLight.clone();
             var directionalLight4 = directionalLight.clone();
             var directionalLight5 = directionalLight.clone();
-            directionalLight1.position.set(-1500, 310, 0);
+            directionalLight1.position.set(-1400, 310, 0);
             directionalLight1.target = wall4;
-            directionalLight2.position.set(1500, 310, 0);
+            directionalLight2.position.set(1400, 310, 0);
             directionalLight2.target = wall2;
-            directionalLight3.position.set(0, 310, 1500)
+            directionalLight3.position.set(0, 310, 1400)
             directionalLight3.target = wall1;
-            directionalLight4.position.set(0, 310, -1500);
+            directionalLight4.position.set(0, 310, -1400);
             directionalLight4.target = wall3;
             directionalLight5.position.set(0, 350, 0);
             scene.add(directionalLight1, directionalLight2, directionalLight3, directionalLight4, directionalLight5);
@@ -345,6 +366,77 @@
             lampbracket15.position.set(-138, 301, 400);
             scene.add(lampbracket1, lampbracket2, lampbracket3, lampbracket4, lampbracket5, lampbracket6, lampbracket7, lampbracket8, lampbracket9, lampbracket10, lampbracket11, lampbracket12, lampbracket13, lampbracket14, lampbracket15);
 
+            // look paint
+            look1 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look1.position.set(0, 150, -550);
+            look1.lookAt(0, 150, -638);
+            look2 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look2.position.set(400, 150, -550);
+            look2.lookAt(400, 150, -638);
+            look3 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look3.position.set(-400, 150, -550);
+            look3.lookAt(-400, 150, -638);
+            look4 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look4.position.set(-450, 150, -50);
+            look4.lookAt(-450, 150, -138);
+            look5 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look5.position.set(180, 150, -50);
+            look5.lookAt(180, 150, -138);
+            look6 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look6.position.set(-500, 150, 245);
+            look6.lookAt(-500, 150, 157);
+            look7 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look7.position.set(-550, 150, 0);
+            look7.lookAt(-638, 150, 0);
+            look8 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look8.position.set(-550, 150, 400);
+            look8.lookAt(-638, 150, 400);
+            look9 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look9.position.set(-550, 150, -400);
+            look9.lookAt(-638, 150, -400);
+            look10 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look10.position.set(-245, 150, 480);
+            look10.lookAt(-333, 150, 480);
+            look11 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look11.position.set(-50, 150, -350);
+            look11.lookAt(-138, 150, -350);
+            look12 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look12.position.set(240, 150, -450);
+            look12.lookAt(152, 150, -450);
+            look13 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look13.position.set(0, 150, -243);
+            look13.lookAt(0, 150, -155);
+            look14 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look14.position.set(350, 150, -243);
+            look14.lookAt(350, 150, -155);
+            look15 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look15.position.set(-450, 150, -243);
+            look15.lookAt(-450, 150, -155);
+            look16 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look16.position.set(-50, 150, 550);
+            look16.lookAt(-50, 150, 638);
+            look17 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look17.position.set(-500, 150, 550);
+            look17.lookAt(-500, 150, 638);
+            look18 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look18.position.set(-300, 150, 50);
+            look18.lookAt(-300, 150, 138);
+            look19 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look19.position.set(550, 150, -400);
+            look19.lookAt(638, 150, -400);
+            look20 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look20.position.set(50, 150, -400);
+            look20.lookAt(138, 150, -400);
+            look21 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look21.position.set(-240, 150, -400);
+            look21.lookAt(-152, 150, -400);
+            look22 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look22.position.set(155, 150, 400);
+            look22.lookAt(243, 150, 400);
+            look23 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
+            look23.position.set(-430, 150, 480);
+            look23.lookAt(-358, 150, 480);
+
         }
 
         function buildwall(x, y, z) {
@@ -405,16 +497,59 @@
         function animate() {
 
             requestAnimationFrame(animate);
-            cameraHelper.position.copy(cameraoverlook.position);
-            cameraHelper.quaternion.copy(cameraoverlook.quaternion);
-            if (useoverlook) {
-                renderer.render(scene, cameraoverlook);
-            } else {
+            if (strategy === 'sol0') {
                 renderer.render(scene, camera);
+            } else if (strategy === 'sol24') {
+                renderer.render(scene, cameraoverlook);
+            } else if (strategy === 'sol1') {
+                renderer.render(scene, look1);
+            } else if (strategy === 'sol2') {
+                renderer.render(scene, look2);
+            } else if (strategy === 'sol3') {
+                renderer.render(scene, look3);
+            } else if (strategy === 'sol4') {
+                renderer.render(scene, look4);
+            } else if (strategy === 'sol5') {
+                renderer.render(scene, look5);
+            } else if (strategy === 'sol6') {
+                renderer.render(scene, look6);
+            } else if (strategy === 'sol7') {
+                renderer.render(scene, look7);
+            } else if (strategy === 'sol8') {
+                renderer.render(scene, look8);
+            } else if (strategy === 'sol9') {
+                renderer.render(scene, look9);
+            } else if (strategy === 'sol10') {
+                renderer.render(scene, look10);
+            } else if (strategy === 'sol11') {
+                renderer.render(scene, look11);
+            } else if (strategy === 'sol12') {
+                renderer.render(scene, look12);
+            } else if (strategy === 'sol13') {
+                renderer.render(scene, look13);
+            } else if (strategy === 'sol14') {
+                renderer.render(scene, look14);
+            } else if (strategy === 'sol15') {
+                renderer.render(scene, look15);
+            } else if (strategy === 'sol16') {
+                renderer.render(scene, look16);
+            } else if (strategy === 'sol17') {
+                renderer.render(scene, look17);
+            } else if (strategy === 'sol18') {
+                renderer.render(scene, look18);
+            } else if (strategy === 'sol19') {
+                renderer.render(scene, look19);
+            } else if (strategy === 'sol20') {
+                renderer.render(scene, look20);
+            } else if (strategy === 'sol21') {
+                renderer.render(scene, look21);
+            } else if (strategy === 'sol22') {
+                renderer.render(scene, look22);
+            } else if (strategy === 'sol23') {
+                renderer.render(scene, look23);
             }
 
         }
-
     </script>
 </body>
 
