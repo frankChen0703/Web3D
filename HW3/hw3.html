@@ -15,30 +15,26 @@
     <br>
     <select id='method'>
         <option value='sol0'>ORBIT</option>
-        <option value='sol24'>OVERLOOK</option>
-        <option value='sol1'>paint1</option>
-        <option value='sol2'>paint2</option>
-        <option value='sol3'>paint3</option>
-        <option value='sol4'>paint4</option>
-        <option value='sol5'>paint5</option>
-        <option value='sol6'>paint6</option>
-        <option value='sol7'>paint7</option>
-        <option value='sol8'>paint8</option>
-        <option value='sol9'>paint9</option>
-        <option value='sol10'>paint10</option>
-        <option value='sol11'>paint11</option>
-        <option value='sol12'>paint12</option>
-        <option value='sol13'>paint13</option>
-        <option value='sol14'>paint14</option>
-        <option value='sol15'>paint15</option>
-        <option value='sol16'>paint16</option>
-        <option value='sol17'>paint17</option>
-        <option value='sol18'>paint18</option>
-        <option value='sol19'>paint19</option>
-        <option value='sol20'>paint20</option>
-        <option value='sol21'>paint21</option>
-        <option value='sol22'>paint22</option>
-        <option value='sol23'>paint23</option>
+        <option value='sol20'>OVERLOOK</option>
+        <option value='sol1'>exhibitionA-paint-top1</option>
+        <option value='sol2'>exhibitionA-paint-top2</option>
+        <option value='sol10'>exhibitionA-paint-left</option>
+        <option value='sol11'>exhibitionA-paint-bottom1</option>
+        <option value='sol12'>exhibitionA-paint-bottom2</option>
+        <option value='sol17'>exhibitionA-paint-right</option>
+        <option value='sol3'>exhibitionB-paint-top</option>
+        <option value='sol9'>exhibitionB-paint-left</option>
+        <option value='sol13'>exhibitionB-paint-bottom</option>
+        <option value='sol18'>exhibitionB-paint-right</option>
+        <option value='sol4'>exhibitionC-paint-top1</option>
+        <option value='sol5'>exhibitionC-paint-top2</option>
+        <option value='sol7'>exhibitionC-paint-left</option>
+        <option value='sol16'>exhibitionC-paint-bottom</option>
+        <option value='sol6'>exhibitionD-paint-top</option>
+        <option value='sol8'>exhibitionD-paint-left</option>
+        <option value='sol14'>exhibitionD-paint-bottom1</option>
+        <option value='sol15'>exhibitionD-paint-bottom2</option>
+        <option value='sol19'>exhibitionD-paint-right</option>
     </select>
 </div>
 
@@ -73,7 +69,8 @@
             x;
         var brightcontrols;
         var strategy = 'sol0';
-        var look1, look2, look3, look4, look5, look6, look7, look8, look9, look10, look11, look12, look13, look14, look15, look16, look17, look18, look19, look20, look21, look22, look23, lookmove;
+        var look1, look2, look3, look4, look5, look6, look7, look8, look9, look10, look11, look12, look13, look14, look15, look16, look17, look18, look19, lookmove;
+        var point1, point2, point3, point4, point5, point6, point7, point8;
         var alpha = 0;
         var check = 0;
 
@@ -131,7 +128,7 @@
             cameraoverlook.lookAt(0, 0, 0);
             lookmove = camera.clone();
             cameraH = makeCameraHelper();
-            scene.add(cameraH);
+            //scene.add(cameraH);
             scene.add(lookmove);
 
 
@@ -148,29 +145,25 @@
 
 
             //wall position
-            var wall1 = buildwall(1300, 300, 10);
+            var wall1 = buildwall(1300, 300, 10);//top
             wall1.position.set(0, 150, -645);
-            var wall2 = buildwall(1300, 300, 10);
+            var wall2 = buildwall(1300, 300, 10);//bottom
             wall2.position.set(0, 150, 645);
-            var wall3 = buildwall(10, 300, 1100);
+            var wall3 = buildwall(10, 300, 1100);//right
             wall3.position.set(645, 150, -100);
-            var wall4 = buildwall(10, 300, 1300);
+            var wall4 = buildwall(10, 300, 1300);//left
             wall4.position.set(-645, 150, 0);
-            var wall5 = buildwall(370, 300, 10);
+            var wall5 = buildwall(370, 300, 10);//B bottom and C top
             wall5.position.set(-465, 150, -145);
-            var wall6 = buildwall(670, 300, 10);
+            var wall6 = buildwall(670, 300, 10);//C bottom and D top
             wall6.position.set(-315, 150, 145);
-            var wall7 = buildwall(670, 300, 10);
+            var wall7 = buildwall(670, 300, 10);//A bottom and c top
             wall7.position.set(185, 150, -145);
-            var wall8 = buildwall(10, 300, 370);
+            var wall8 = buildwall(10, 300, 370);//A left and B right
             wall8.position.set(-145, 150, -335);
-            var wall9 = buildwall(10, 300, 370);
-            wall9.position.set(145, 150, -465);
-            var wall10 = buildwall(10, 300, 370);
-            wall10.position.set(-350, 150, 465);
-            var wall11 = buildwall(10, 300, 500);
-            wall11.position.set(250, 150, 400);
-            scene.add(wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8, wall9, wall10, wall11);
+            var wall9 = buildwall(10, 300, 500);//D right and Export
+            wall9.position.set(250, 150, 400);
+            scene.add(wall1, wall2, wall3, wall4, wall5, wall6, wall7, wall8, wall9);
 
             //nuture light
             const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
@@ -191,134 +184,112 @@
             scene.add(directionalLight1, directionalLight2, directionalLight3, directionalLight4, directionalLight5);
 
             //chair position
-            var chair1 = buildChair();
+            var chair1 = buildChair();// D top-left
             chair1.position.set(-525, 0, 350);
-            var chair2 = buildChair();
+            var chair2 = buildChair();// D bottom-left
             chair2.position.set(-525, 0, 550);
-            var chair3 = buildChair();
-            chair3.position.set(-150, 0, 550);
-            var chair4 = buildChair();
-            chair4.position.set(400, 0, -550);
-            var chair5 = buildChair();
-            chair5.position.set(-450, 0, -500);
-            var chair6 = buildChair();
-            chair6.position.set(70, 0, 550);
-            var chair7 = buildChair();
+            var chair3 = buildChair();// A right-top
+            chair3.position.set(400, 0, -550);
+            var chair4 = buildChair();// B top
+            chair4.position.set(-450, 0, -500);
+            var chair5 = buildChair();// D right-bottom
+            chair5.position.set(-50, 0, 550);
+            var chair6 = buildChair();// A left
+            chair6.rotation.y = Math.PI / 2;
+            chair6.position.set(0, 0, -400);
+            var chair7 = buildChair();// B left
             chair7.rotation.y = Math.PI / 2;
-            chair7.position.set(0, 0, -400);
-            var chair8 = buildChair();
+            chair7.position.set(-550, 0, -400);
+            var chair8 = buildChair();// B right
             chair8.rotation.y = Math.PI / 2;
-            chair8.position.set(-550, 0, -400);
-            var chair9 = buildChair();
+            chair8.position.set(-350, 0, -400);
+            var chair9 = buildChair();// A right
             chair9.rotation.y = Math.PI / 2;
-            chair9.position.set(-350, 0, -400);
-            var chair10 = buildChair();
+            chair9.position.set(500, 0, -400);
+            var chair10 = buildChair();// D right-mid
             chair10.rotation.y = Math.PI / 2;
-            chair10.position.set(300, 0, -400);
-            var chair11 = buildChair();
-            chair11.rotation.y = Math.PI / 2;
-            chair11.position.set(500, 0, -400);
-            var chair12 = buildChair();
-            chair12.rotation.y = Math.PI / 2;
-            chair12.position.set(-250, 0, 400);
-            var chair13 = buildChair();
-            chair13.rotation.y = Math.PI / 2;
-            chair13.position.set(150, 0, 400);
-            scene.add(chair1, chair2, chair3, chair4, chair5, chair6, chair7, chair8, chair9, chair10, chair11, chair12, chair13);
+            chair10.position.set(150, 0, 400);
+            var chair11 = buildChair();// A bottom
+            chair11.position.set(400, 0, -250);
+            scene.add(chair1, chair2, chair3, chair4, chair5, chair6, chair7, chair8, chair9, chair10, chair11);
 
-            //paint position
-            var paint1 = buildpaint('https://i.imgur.com/GASakSo.jpg', 120, 120)
+            //paint position: ExhibitionA: 梵谷 ExhibitionB: 畢卡索 ExhibitionC: 達文西 ExhibitionD: 草間彌生
+            var paint1 = buildpaint('https://i.imgur.com/UhQjkPO.png', 120, 120)// A1 top
             paint1.position.set(0, 150, -638);
-            var paint2 = buildpaint('https://lh6.ggpht.com/HlgucZ0ylJAfZgusynnUwxNIgIp5htNhShF559x3dRXiuy_UdP3UQVLYW6c', 120, 120)
+            var paint2 = buildpaint('https://i.imgur.com/4KFTrKn.png', 120, 120);// A2 top
             paint2.position.set(400, 150, -638);
-            var paint3 = buildpaint('https://ichef.bbci.co.uk/news/640/cpsprodpb/34A6/production/_106187431_vincent-van-gogh---starry-n.jpg', 120, 120)
+            var paint3 = buildpaint('https://i.imgur.com/55SSJvB.png', 120, 120);// B top
             paint3.position.set(-400, 150, -638);
-            var paint4 = buildpaint('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/270px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg', 120, 120)
+            var paint4 = buildpaint('https://i.imgur.com/hE4WVKj.png', 120, 120);// C1 top
             paint4.position.set(-450, 150, -138);
-            var paint5 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqkaoVUVQX56eYEtRkPi85vieYulnFP_FfoQ&usqp=CAU', 120, 120)
+            var paint5 = buildpaint('https://i.imgur.com/Bvhl7ba.png', 120, 120);// C2 top
             paint5.position.set(180, 150, -138);
-            var paint6 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbjgnFbRTLEyB2GS1SNDyuwey8pth1zL-_YA&usqp=CAU', 120, 120)
+            var paint6 = buildpaint('https://i.imgur.com/rmGiSM2.png', 120, 120);// D top
             paint6.position.set(-500, 150, 157);
-            var paint7 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQUZz1y_249N7tFAhjEA2Qz4mSEhdX82oxLA&usqp=CAU', 120, 120)
+            var paint7 = buildpaint('https://i.imgur.com/RAtawsz.png', 120, 120);// C left
             paint7.rotation.y = Math.PI / 2;
             paint7.position.set(-638, 150, 0);
-            var paint8 = buildpaint('https://pic.616pic.com/bg_w1180/00/17/12/QGKdk1vKFv.jpg', 120, 120)
+            var paint8 = buildpaint('https://i.imgur.com/j0t95HL.jpg', 120, 120);// D left
             paint8.rotation.y = Math.PI / 2;
             paint8.position.set(-638, 150, 400);
-            var paint9 = buildpaint('https://bnextmedia.s3.hicloud.net.tw/image/album/2022-09/img-1662373463-50156.jpg', 120, 120)
+            var paint9 = buildpaint('https://i.imgur.com/vY9T5PX.png', 120, 120);//B left
             paint9.rotation.y = Math.PI / 2;
             paint9.position.set(-638, 150, -400);
-            var paint10 = buildpaint('https://pic.616pic.com/bg_w1180/00/09/23/DCYI3TIknP.jpg', 120, 120)
+            var paint10 = buildpaint('https://i.imgur.com/AHc6KMH.png', 120, 120);//A left
             paint10.rotation.y = Math.PI / 2;
-            paint10.position.set(-333, 150, 480);
-            var paint11 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH7P00wEcDuZLGK4hlZa7pNMQLbWVIpK9KpakkEjoOLJgJQQ86ycKkNT_gem-nnVBz44Q&usqp=CAU', 120, 120)
-            paint11.rotation.y = Math.PI / 2;
-            paint11.position.set(-138, 150, -350);
-            var paint12 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoFt5Db1QIKFwRvX8GLNFh9B-dcJNZzjCLLGivsvikESvlclUu-IIMRp-CQA42fT0DtDQ&usqp=CAU', 120, 120)
-            paint12.rotation.y = Math.PI / 2;
-            paint12.position.set(152, 150, -450);
-            var paint13 = buildpaint('https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/%E5%9D%90%E5%9C%A8%E7%AA%97%E9%82%8A%E7%9A%84%E5%A5%B3%E4%BA%BA-1618326685.jpg?crop=0.379xw:0.759xh;0.00326xw,0.0130xh&resize=640:*', 120, 120)
+            paint10.position.set(-138, 150, -350);
+            var paint11 = buildpaint('https://i.imgur.com/OfIss4m.png', 120, 120);// A1 bottom
+            paint11.rotation.y = Math.PI;
+            paint11.position.set(0, 150, -155);
+            var paint12 = buildpaint('https://i.imgur.com/tXKTYxR.png', 120, 120);// A2 bottom
+            paint12.rotation.y = Math.PI;
+            paint12.position.set(350, 150, -155);
+            var paint13 = buildpaint('https://i.imgur.com/vfqwxbE.png', 120, 120);// B bottom
             paint13.rotation.y = Math.PI;
-            paint13.position.set(0, 150, -155);
-            var paint14 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB5y5SxT1y2U4B-KIS4Zj_Pa6nwDASyhpNxg&usqp=CAU', 120, 120)
+            paint13.position.set(-450, 150, -155);
+            var paint14 = buildpaint('https://i.imgur.com/fYon388.png', 120, 120);// D1 bottom
             paint14.rotation.y = Math.PI;
-            paint14.position.set(350, 150, -155);
-            var paint15 = buildpaint('https://i.imgur.com/p8CRm9W.jpg', 120, 120)
+            paint14.position.set(-50, 150, 638);
+            var paint15 = buildpaint('https://i.imgur.com/vHoSZAt.png', 120, 120);// D2 bottom
             paint15.rotation.y = Math.PI;
-            paint15.position.set(-450, 150, -155);
-            var paint16 = buildpaint('https://dza2a2ql7zktf.cloudfront.net/binaries-cdn/dqzqcuqf9/image/fetch/ar_16:10,q_auto,dpr_auto,c_fill,f_auto,w_412/https://d2u3kfwd92fzu7.cloudfront.net/asset/cms/Art_Basel_Hong_Kong_2022_Conversations-1.jpg', 120, 120)
+            paint15.position.set(-500, 150, 638);
+            var paint16 = buildpaint('https://i.imgur.com/Ihvhjbz.png', 120, 120);// C bottom
             paint16.rotation.y = Math.PI;
-            paint16.position.set(-50, 150, 638);
-            var paint17 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjtabPG8rfFQB0YGR6EXl5kHp-7VG46Jh1KA&usqp=CAU', 120, 120)
-            paint17.rotation.y = Math.PI;
-            paint17.position.set(-500, 150, 638);
-            var paint18 = buildpaint('https://p1-tt.byteimg.com/origin/471d00002f2fb2b40b9f', 120, 120)
-            paint18.rotation.y = Math.PI;
-            paint18.position.set(-300, 150, 138);
-            var paint19 = buildpaint('https://img.lovepik.com/background/20211022/small/lovepik-abstract-artistic-background-image_500868317.jpg', 120, 120)
+            paint16.position.set(-300, 150, 138);
+            var paint17 = buildpaint('https://i.imgur.com/B3LrQSy.png', 120, 120);// A right
+            paint17.rotation.y = (Math.PI * 3) / 2;
+            paint17.position.set(638, 150, -400);
+            var paint18 = buildpaint('https://i.imgur.com/HVMKmqu.png', 120, 120);// B right
+            paint18.rotation.y = (Math.PI * 3) / 2;
+            paint18.position.set(-152, 150, -400);
+            var paint19 = buildpaint('https://i.imgur.com/FFMgug1.png', 120, 120);// D right
             paint19.rotation.y = (Math.PI * 3) / 2;
-            paint19.position.set(638, 150, -400);
-            var paint20 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2ZrVhEARBN_ie6AzoeOi7Ru95_SKRev5w9i8xiE09zdNDmC_pax6r5rgDtd7k9eQwUTg&usqp=CAU', 120, 120)
-            paint20.rotation.y = (Math.PI * 3) / 2;
-            paint20.position.set(138, 150, -400);
-            var paint21 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB8N-vARvr9gx8QgnAN4iiJvByENxu-TfgHcLIMBeFlviuq2hX9wHl_mRuUHkxwAsWdpg&usqp=CAU', 120, 120)
-            paint21.rotation.y = (Math.PI * 3) / 2;
-            paint21.position.set(-152, 150, -400);
-            var paint22 = buildpaint('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSn1OwHPCq4AZBSOQnwKpmdrssAC20Qiot89w&usqp=CAU', 120, 120)
-            paint22.rotation.y = (Math.PI * 3) / 2;
-            paint22.position.set(243, 150, 400);
-            var paint23 = buildpaint('https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2022/11/02/0/19126130.jpg&x=0&y=0&sw=0&sh=0&sl=W&fw=1050', 120, 120)
-            paint23.rotation.y = (Math.PI * 3) / 2;
-            paint23.position.set(-358, 150, 480);
-            scene.add(paint1, paint2, paint3, paint4, paint5, paint6, paint7, paint8, paint9, paint10, paint11, paint12, paint13, paint14, paint15, paint16, paint17, paint18, paint19, paint20, paint21, paint22, paint23);
+            paint19.position.set(243, 150, 400);
+            scene.add(paint1, paint2, paint3, paint4, paint5, paint6, paint7, paint8, paint9, paint10, paint11, paint12, paint13, paint14, paint15, paint16, paint17, paint18, paint19);
 
             // picture lamp
-            var light1 = new Light(0, 300, -500, paint1);
-            var light2 = new Light(400, 300, -500, paint2);
-            var light3 = new Light(-400, 300, -500, paint3)
-            var light4 = new Light(-450, 300, 0, paint4);
-            var light5 = new Light(180, 300, 0, paint5);
-            var light6 = new Light(-500, 300, 295, paint6);
-            var light7 = new Light(-500, 300, 0, paint7);
-            var light8 = new Light(-500, 300, 400, paint8);
-            var light9 = new Light(-500, 300, -400, paint9);
-            var light10 = new Light(-138, 300, 480, paint10);
-            var light11 = new Light(0, 300, -350, paint11);
-            var light12 = new Light(290, 300, -450, paint12);
-            var light13 = new Light(0, 300, -293, paint13);
-            var light14 = new Light(350, 300, -293, paint14);
-            var light15 = new Light(-450, 300, -293, paint15);
-            var light16 = new Light(-50, 300, 500, paint16);
-            var light17 = new Light(-500, 300, 500, paint17);
-            var light18 = new Light(-300, 300, 0, paint18);
-            var light19 = new Light(500, 300, -400, paint19);
-            var light20 = new Light(0, 300, -400, paint20);
-            var light21 = new Light(-290, 300, -400, paint21);
-            var light22 = new Light(105, 300, 400, paint22);
-            var light23 = new Light(-496, 300, 480, paint23);
+            var light1 = new Light(0, 300, -500, paint1);// A1 top
+            var light2 = new Light(400, 300, -500, paint2);// A2 top
+            var light3 = new Light(-400, 300, -500, paint3);// B top
+            var light4 = new Light(-450, 300, 0, paint4);// C1 top
+            var light5 = new Light(180, 300, 0, paint5);// C2 top
+            var light6 = new Light(-500, 300, 295, paint6);// D top
+            var light7 = new Light(-500, 300, 0, paint7);// C left
+            var light8 = new Light(-500, 300, 400, paint8);// D left
+            var light9 = new Light(-500, 300, -400, paint9);//B left
+            var light10 = new Light(0, 300, -350, paint10);//A left
+            var light11 = new Light(0, 300, -293, paint11);// A1 bottom
+            var light12 = new Light(350, 300, -293, paint12);// A2 bottom
+            var light13 = new Light(-450, 300, -293, paint13);// B bottom
+            var light14 = new Light(-50, 300, 500, paint14);// D1 bottom
+            var light15 = new Light(-500, 300, 500, paint15);// D2 bottom
+            var light16 = new Light(-300, 300, 0, paint16);// C bottom
+            var light17 = new Light(500, 300, -400, paint17);// A right
+            var light18 = new Light(-290, 300, -400, paint18);// B right
+            var light19 = new Light(105, 300, 400, paint19);// D right
 
             lamps = [];
-            lamps.push(light1, light2, light3, light4, light5, light6, light7, light8, light9, light10, light11, light12, light13, light14, light15, light16, light17, light18, light19, light20, light21, light22, light23);
+            lamps.push(light1, light2, light3, light4, light5, light6, light7, light8, light9, light10, light11, light12, light13, light14, light15, light16, light17, light18, light19);
 
             //Installation art
             const geometry = new THREE.TorusKnotGeometry(50, 15, 100, 16);
@@ -326,53 +297,57 @@
                 color: 0x77DDFF
             });
             torusKnot = new THREE.Mesh(geometry, material);
-            torusKnot.position.set(-70, 130, 400);
+            torusKnot.position.set(-200, 130, 400);
             var base = new THREE.Mesh(new THREE.BoxGeometry(50, 50, 50), new THREE.MeshBasicMaterial({
                 color: 0x77DDFF
             }));
-            base.position.set(-70, 25, 400);
+            base.position.set(-200, 25, 400);
             scene.add(torusKnot, base);
 
             //Lamp Bracket
-            var lampbracket1 = buildLampBracket(1200);
+            var lampbracket1 = buildLampBracket(1200);// C
             lampbracket1.position.set(0, 301, 0);
-            var lampbracket2 = buildLampBracket(400);
+            var lampbracket2 = buildLampBracket(250);// A left
             lampbracket2.rotation.y = Math.PI / 2;
-            lampbracket2.position.set(0, 301, -400);
-            var lampbracket3 = buildLampBracket(400);
+            lampbracket2.position.set(0, 301, -390);
+            var lampbracket3 = buildLampBracket(250);// D left 
             lampbracket3.rotation.y = Math.PI / 2;
-            lampbracket3.position.set(-500, 301, 400);
-            var lampbracket4 = buildLampBracket(230);
+            lampbracket3.position.set(-500, 301, 390);
+            var lampbracket4 = buildLampBracket(230);// B top
             lampbracket4.position.set(-400, 301, -500);
-            var lampbracket5 = buildLampBracket(230);
+            var lampbracket5 = buildLampBracket(230);// B bottom
             lampbracket5.position.set(-400, 301, -293);
-            var lampbracket6 = buildLampBracket(230);
+            var lampbracket6 = buildLampBracket(230);// B left
             lampbracket6.rotation.y = Math.PI / 2;
             lampbracket6.position.set(-500, 301, -400);
-            var lampbracket7 = buildLampBracket(230);
+            var lampbracket7 = buildLampBracket(230);// B right
             lampbracket7.rotation.y = Math.PI / 2;
             lampbracket7.position.set(-290, 301, -400);
-            var lampbracket8 = buildLampBracket(230);
-            lampbracket8.position.set(400, 301, -500);
-            var lampbracket9 = buildLampBracket(230);
-            lampbracket9.position.set(400, 301, -293);
-            var lampbracket10 = buildLampBracket(230);
+            var lampbracket8 = buildLampBracket(530);// A top
+            lampbracket8.position.set(250, 301, -500);
+            var lampbracket9 = buildLampBracket(530);// A bottom
+            lampbracket9.position.set(250, 301, -293);
+            var lampbracket10 = buildLampBracket(230);// A right
             lampbracket10.rotation.y = Math.PI / 2;
             lampbracket10.position.set(500, 301, -400);
-            var lampbracket11 = buildLampBracket(230);
-            lampbracket11.rotation.y = Math.PI / 2;
-            lampbracket11.position.set(290, 301, -400);
-            var lampbracket12 = buildLampBracket(230);
-            lampbracket12.position.set(-16.5, 301, 500);
-            var lampbracket13 = buildLampBracket(230);
-            lampbracket13.position.set(-16.5, 301, 293);
-            var lampbracket14 = buildLampBracket(230);
-            lampbracket14.rotation.y = Math.PI / 2;
-            lampbracket14.position.set(105, 301, 400);
-            var lampbracket15 = buildLampBracket(230);
-            lampbracket15.rotation.y = Math.PI / 2;
-            lampbracket15.position.set(-138, 301, 400);
-            scene.add(lampbracket1, lampbracket2, lampbracket3, lampbracket4, lampbracket5, lampbracket6, lampbracket7, lampbracket8, lampbracket9, lampbracket10, lampbracket11, lampbracket12, lampbracket13, lampbracket14, lampbracket15);
+            var lampbracket11 = buildLampBracket(630);// D bottom
+            lampbracket11.position.set(-195, 301, 500);
+            var lampbracket12 = buildLampBracket(630);// D top
+            lampbracket12.position.set(-195, 301, 293);
+            var lampbracket13 = buildLampBracket(250);// D right
+            lampbracket13.rotation.y = Math.PI / 2;
+            lampbracket13.position.set(105, 301, 390);
+            scene.add(lampbracket1, lampbracket2, lampbracket3, lampbracket4, lampbracket5, lampbracket6, lampbracket7, lampbracket8, lampbracket9, lampbracket10, lampbracket11, lampbracket12, lampbracket13);
+            //detection point
+            point1 = lookpoint(580, -250);// A & C 
+            point2 = lookpoint(580, -50);// C & A 
+            point3 = lookpoint(-50, -580);// A & B
+            point4 = lookpoint(-250, -580);// B & A 
+            point5 = lookpoint(-225, -250);// B & C 
+            point6 = lookpoint(-225, -50);// C & B 
+            point7 = lookpoint(150, 100);// C & D 
+            point8 = lookpoint(150, 250);// D & C 
+            //scene.add(point1,point2,point3,point4,point5,point6,point7,point8);
 
             // look paint
             look1 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
@@ -403,48 +378,35 @@
             look9.position.set(-550, 150, -400);
             look9.lookAt(-638, 150, -400);
             look10 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
-            look10.position.set(-245, 150, 480);
-            look10.lookAt(-333, 150, 480);
+            look10.position.set(-50, 150, -350);
+            look10.lookAt(-138, 150, -350);
             look11 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
-            look11.position.set(-50, 150, -350);
-            look11.lookAt(-138, 150, -350);
+            look11.position.set(0, 150, -243);
+            look11.lookAt(0, 150, -155);
             look12 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
-            look12.position.set(240, 150, -450);
-            look12.lookAt(152, 150, -450);
+            look12.position.set(350, 150, -243);
+            look12.lookAt(350, 150, -155);
             look13 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
-            look13.position.set(0, 150, -243);
-            look13.lookAt(0, 150, -155);
+            look13.position.set(-450, 150, -243);
+            look13.lookAt(-450, 150, -155);
             look14 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
-            look14.position.set(350, 150, -243);
-            look14.lookAt(350, 150, -155);
+            look14.position.set(-50, 150, 550);
+            look14.lookAt(-50, 150, 638);
             look15 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
-            look15.position.set(-450, 150, -243);
-            look15.lookAt(-450, 150, -155);
+            look15.position.set(-500, 150, 550);
+            look15.lookAt(-500, 150, 638);
             look16 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
-            look16.position.set(-50, 150, 550);
-            look16.lookAt(-50, 150, 638);
+            look16.position.set(-300, 150, 50);
+            look16.lookAt(-300, 150, 138);
             look17 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
-            look17.position.set(-500, 150, 550);
-            look17.lookAt(-500, 150, 638);
+            look17.position.set(550, 150, -400);
+            look17.lookAt(638, 150, -400);
             look18 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
-            look18.position.set(-300, 150, 50);
-            look18.lookAt(-300, 150, 138);
+            look18.position.set(-240, 150, -400);
+            look18.lookAt(-152, 150, -400);
             look19 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
-            look19.position.set(550, 150, -400);
-            look19.lookAt(638, 150, -400);
-            look20 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
-            look20.position.set(50, 150, -400);
-            look20.lookAt(138, 150, -400);
-            look21 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
-            look21.position.set(-240, 150, -400);
-            look21.lookAt(-152, 150, -400);
-            look22 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
-            look22.position.set(155, 150, 400);
-            look22.lookAt(243, 150, 400);
-            look23 = new THREE.PerspectiveCamera(110, window.innerWidth / window.innerHeight, 1, 150);
-            look23.position.set(-430, 150, 480);
-            look23.lookAt(-358, 150, 480);
-
+            look19.position.set(155, 150, 400);
+            look19.lookAt(243, 150, 400);
         }
 
         function buildwall(x, y, z) {
@@ -502,6 +464,14 @@
 
         }
 
+        function lookpoint(x = 0, z = 0) {
+            var point = new THREE.Mesh(new THREE.BoxGeometry(50, 60, 30), new THREE.MeshBasicMaterial({
+                color: 0x77DDFF
+            }));
+            point.position.set(x, 150, z);
+            return point;
+        }
+
         function clamp(v, lo, hi) {
             if (v < lo) return lo;
             if (v > hi) return hi;
@@ -517,11 +487,11 @@
             cameraH.position.copy(lookmove.position);
             cameraH.quaternion.copy(lookmove.quaternion);
             if (strategy === 'sol0') {
-                renderer.render(scene, lookmove);
+                renderer.render(scene, camera);
                 lookmove = lookmove.clone();
                 lookmove.position.lerpVectors(lookmove.position, camera.position, alpha);
                 lookmove.quaternion.slerpQuaternions(lookmove.quaternion, camera.quaternion, alpha);
-            } else if (strategy === 'sol24' || check === 1) {
+            } else if (strategy === 'sol20' || check === 1) {
                 renderer.render(scene, lookmove);
                 lookmove = lookmove.clone();
                 lookmove.position.lerpVectors(lookmove.position, cameraoverlook.position, alpha);
@@ -533,11 +503,20 @@
             } else if (strategy === 'sol1') {
                 renderer.render(scene, lookmove);
                 lookmove = lookmove.clone();
-                lookmove.position.lerpVectors(lookmove.position, look1.position, alpha);
-                lookmove.quaternion.slerpQuaternions(lookmove.quaternion, look2.quaternion, alpha);
-                //if(lookmove.position !=  cameraoverlook.position){
-                //check = 1 ;
-                //}
+                if (lookmove.position.y === 150 && lookmove.position.z < -150 && lookmove.position.x > -150) {
+                    lookmove.position.lerpVectors(lookmove.position, look1.position, alpha);
+                    lookmove.quaternion.slerpQuaternions(lookmove.quaternion, look2.quaternion, alpha);
+                }
+                else if (lookmove.position.y != 150) {
+                    lookmove.position.lerpVectors(lookmove.position, look1.position, alpha);
+                    lookmove.quaternion.slerpQuaternions(lookmove.quaternion, look2.quaternion, alpha);
+                }
+                else if (lookmove.position.y === 150 && lookmove.position.z < -150 && lookmove.position.x < -150) {
+                    lookmove.position.lerpVectors(lookmove.position, point4.position, alpha);
+                    lookmove.quaternion.slerpQuaternions(lookmove.quaternion, look2.quaternion, alpha);
+                    lookmove.position.lerpVectors(lookmove.position, look1.position, alpha);
+                    lookmove.quaternion.slerpQuaternions(lookmove.quaternion, look2.quaternion, alpha);
+                }
             } else if (strategy === 'sol2') {
                 renderer.render(scene, lookmove);
                 lookmove = lookmove.clone();
@@ -632,26 +611,6 @@
                 lookmove = lookmove.clone();
                 lookmove.position.lerpVectors(lookmove.position, look19.position, alpha);
                 lookmove.quaternion.slerpQuaternions(lookmove.quaternion, look19.quaternion, alpha);
-            } else if (strategy === 'sol20') {
-                renderer.render(scene, lookmove);
-                lookmove = lookmove.clone();
-                lookmove.position.lerpVectors(lookmove.position, look20.position, alpha);
-                lookmove.quaternion.slerpQuaternions(lookmove.quaternion, look20.quaternion, alpha);
-            } else if (strategy === 'sol21') {
-                renderer.render(scene, lookmove);
-                lookmove = lookmove.clone();
-                lookmove.position.lerpVectors(lookmove.position, look21.position, alpha);
-                lookmove.quaternion.slerpQuaternions(lookmove.quaternion, look21.quaternion, alpha);
-            } else if (strategy === 'sol22') {
-                renderer.render(scene, lookmove);
-                lookmove = lookmove.clone();
-                lookmove.position.lerpVectors(lookmove.position, look22.position, alpha);
-                lookmove.quaternion.slerpQuaternions(lookmove.quaternion, look22.quaternion, alpha);
-            } else if (strategy === 'sol23') {
-                renderer.render(scene, lookmove);
-                lookmove = lookmove.clone();
-                lookmove.position.lerpVectors(lookmove.position, look23.position, alpha);
-                lookmove.quaternion.slerpQuaternions(lookmove.quaternion, look23.quaternion, alpha);
             }
 
         }
