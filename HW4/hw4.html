@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hw4</title>
+</head>
+<h1 style="font-size:2em; text-align:center; margin:15px; color:Orchid">
+    I3B54 HW4 terrace
+</h1>
+
+<hr>
+
+<div id="container">
+</div>
+
+<div style="width:30vw; float:left; margin:10px;background-color:Plum">
+    <input type=radio class='cclass' id='tabling' name='c' value='table' checked> table <br>
+    <input type=radio class='cclass' id='chairing' name='c' value='chair'> chair<br>
+    <p id='debugMsg'>
+    </p>
+</div>
+
+<div style="width:30vw; float:left; margin:10px;background-color:Lime">
+    <input type=radio class='gclass' id='placing' name='g' value='place' checked> Place <br>
+    <input type=radio class='gclass' id='deleting' name='g' value='delete'> Delete<br>
+    <input type=radio class='gclass' id='moving' name='g' value='move'> Move<br>
+    <p id='debugMsg1'>
+    </p>
+</div>
+
+<div style="width:30vw;float:left; margin:10px; background-color:Cyan">
+    <button id='save'>Save</button><br>
+    <button id='clear'>Clear</button><br>
+    <button id='restore'>Restore</button>
+    <p id='debugMsg2'>
+    </p>
+</div>
+<style>
+    #container {
+        width: 60vw;
+        height: 60vw;
+        float: left;
+        margin: 10px;
+    }
+
+    #debugMsg {
+        margin: 10px;
+        text-align: justify;
+    }
+
+    #debugMsg1 {
+        margin: 10px;
+        text-align: justify;
+    }
+
+    #debugMsg2 {
+        margin: 10px;
+        text-align: justify;
+    }
+</style>
+
+<body>
+    <script src="https://threejs.org/build/three.min.js"></script>
+    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+        var scene, renderer, camera;
+        var plane, puckchair, pucktable, tablecount = 0,
+            chaircount = 0;
+        var mouse = new THREE.Vector2();
+        var raycaster = new THREE.Raycaster();
+        var placing = true,
+            deleting = false,
+            moving = false;
+        var tabling = true,
+            chairing = false;
+        var puckts = [],
+            puckcs = [];
+        var puckId = 0;
+        var thePuckt, thePuckc;
+        var controls; // move to global, for changing controls
+
+        init();
+        animate();
+
+        $('.cclass').click(function () {
+            if ($(this).val() === 'table') { // table
+                tabling = true;
+                chairing = false;
+            } else if ($(this).val() === 'chair') { // chair
+                tabling = false;
+                chairing = true;
+            }
+
+        });
+
+        $('.gclass').click(function () {
+            if ($(this).val() === 'place') { // place
+                placing = true;
+                deleting = false;
+                moving = false;
+            } else if ($(this).val() === 'delete') { // delete
+                placing = false;
+                deleting = true;
+                moving = false;
+            } else if ($(this).val() === 'move') { // move
+                placing = false;
+                deleting = false;
+                moving = true;
+            }
+
+        });
+
+        $('#save').click(function () {
+
+            // pucks --> puckRecs
+            var rects = [];
+            if (puckts.length != 0) {
+                for (let i = 0; i < puckts.length; i++) {
+                    var rec = {};
+                    rec.name = puckts[i].name;
+                    rec.x = puckts[i].position.x.toFixed(2);
+                    rec.z = puckts[i].position.z.toFixed(2);
+                    rects.push(rec);
+                }
+            }
+            var reccs = [];
+            if (puckcs.length != 0) {
+                for (let i = 0; i < puckcs.length; i++) {
+                    var rec = {};
+                    rec.name = puckcs[i].name;
+                    rec.x = puckcs[i].position.x.toFixed(2);
+                    rec.z = puckcs[i].position.z.toFixed(2);
+                    reccs.push(rec);
+                }
+            }
+            // puckRecs --> JSON.stringify --> localStorage
+            var recLogt = JSON.stringify(rects);
+            var recLogc = JSON.stringify(reccs);
+            localStorage.setItem('puckLogt', recLogt);
+            localStorage.setItem('puckLogc', recLogc);
+        });
+
+        $('#clear').click(function () {
+
+            puckcs.forEach(function (puckchair) {
+                puckchair.removeFromParent();
+            })
+
+            puckts.forEach(function (pucktable) {
+                pucktable.removeFromParent();
+            })
+
+            puckts = [];
+            puckcs = [];
+        });
+
+        $('#restore').click(function () {
+
+            // localStorage --> JSON.parse --> puckRecs
+            var parseLogt = JSON.parse(localStorage.getItem('puckLogt'));
+            if (parseLogt != null) {
+                for (let i = 0; i < parseLogt.length; i++) {
+                    var newPuck = pucktable.clone();
+                    newPuck.position.set(parseLogt[i].x, 20, parseLogt[i].z);
+                    scene.add(newPuck);
+                    puckts.push(newPuck);
+                }
+            }
+            var parseLogc = JSON.parse(localStorage.getItem('puckLogc'));
+            if (parseLogc != null) {
+                for (let i = 0; i < parseLogc.length; i++) {
+                    var newPuck = puckchair.clone();
+                    newPuck.position.set(parseLogc[i].x, 10, parseLogc[i].z);
+                    scene.add(newPuck);
+                    puckcs.push(newPuck);
+                }
+            }
+        });
+
+        function init() {
+
+            renderer = new THREE.WebGLRenderer({
+                antialias: true
+            });
+            var ww = $('#container').innerWidth();
+            var hh = $('#container').innerHeight();
+            renderer.setSize(ww, hh);
+            renderer.setClearColor(0x555555);
+            $('#container').append(renderer.domElement);
+
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(45, ww / hh, 1, 10000);
+            camera.position.set(0, 80, 200)
+            camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+
+            // build an invisible plane, overlapping the grid
+            plane = bulidfloor();
+            plane.rotation.x = -Math.PI / 2;
+            scene.add(plane);
+
+            window.addEventListener('resize', onWindowResize, false);
+            $('#container').on("pointerdown", onMouseDown);
+            $('#container').on("pointermove", onMouseMove);
+            $('#container').on("pointerup", onMouseUp);
+
+            thePuck = null;
+        }
+
+        function bulidtable() {
+            var loader = new THREE.TextureLoader();
+            var Map = loader.load('https://i.imgur.com/Wz0uVBt.png');
+            var tableGroup = new THREE.Group();
+            var mesh = new THREE.MeshBasicMaterial({
+                map: Map
+            });
+            var base = new THREE.Mesh(new THREE.BoxGeometry(30, 2, 30), mesh);
+            var foot1 = new THREE.Mesh(new THREE.BoxGeometry(1, 20, 1), mesh);
+            var foot2 = new THREE.Mesh(new THREE.BoxGeometry(1, 20, 1), mesh);
+            var foot3 = new THREE.Mesh(new THREE.BoxGeometry(1, 20, 1), mesh);
+            var foot4 = new THREE.Mesh(new THREE.BoxGeometry(1, 20, 1), mesh);
+            tableGroup.add(base, foot1, foot2, foot3, foot4);
+            base.position.set = (0, 21.5, 0);
+            foot1.position.set(14, 10, 14.5);
+            foot2.position.set(-14.5, 10, 14.5);
+            foot3.position.set(-14.5, 10, -14.5);
+            foot4.position.set(14.5, 10, -14.5);
+            tableGroup.rotation.x = -Math.PI;
+            return tableGroup;
+        }
+
+        function bulidchair() {
+            var loader = new THREE.TextureLoader();
+            var Map = loader.load('https://i.imgur.com/1Wm9iUF.png');
+            var chairGroup = new THREE.Group();
+            var mesh = new THREE.MeshBasicMaterial({
+                map: Map
+            });
+            var base = new THREE.Mesh(new THREE.BoxGeometry(10, 2, 10), mesh);
+            var foot1 = new THREE.Mesh(new THREE.BoxGeometry(1, 10, 1), mesh);
+            var foot2 = new THREE.Mesh(new THREE.BoxGeometry(1, 10, 1), mesh);
+            var foot3 = new THREE.Mesh(new THREE.BoxGeometry(1, 10, 1), mesh);
+            var foot4 = new THREE.Mesh(new THREE.BoxGeometry(1, 10, 1), mesh);
+            var box = new THREE.Mesh(new THREE.BoxGeometry(10, 12, 10), new THREE.MeshNormalMaterial({
+                wireframe: true
+            }));
+            chairGroup.add(box, base, foot1, foot2, foot3, foot4);
+            box.position.set(0, 6, 0);
+            base.position.set = (0, 11, 0);
+            foot1.position.set(4.5, 5, 4.5);
+            foot2.position.set(-4.5, 5, 4.5);
+            foot3.position.set(-4.5, 5, -4.5);
+            foot4.position.set(4.5, 5, -4.5);
+            chairGroup.rotation.x = -Math.PI;
+            return chairGroup;
+        }
+
+        function bulidfloor() {
+            var loader = new THREE.TextureLoader();
+            var floorGroup = new THREE.Group();
+            var grassMap = loader.load('https://i.imgur.com/TwdIbya.png');
+            var grassAlpha = loader.load('https://i.imgur.com/VpyNkQc.png');
+            var grassFloor = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshBasicMaterial({
+                map: grassMap,
+                transparent: true,
+                alphaMap: grassAlpha
+            }));
+
+            var stoneMap = loader.load('https://i.imgur.com/9u92lud.png');
+            var stoneAlpha = loader.load('https://i.imgur.com/qOeb4ur.png');
+            var stoneFloor = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshBasicMaterial({
+                map: stoneMap,
+                transparent: true,
+                alphaMap: stoneAlpha
+            }));
+            floorGroup.add(grassFloor, stoneFloor);
+            return floorGroup;
+        }
+
+        function onWindowResize() {
+            var ww = $('#container').innerWidth();
+            var hh = $('#container').innerHeight();
+            camera.aspect = ww / hh;
+            camera.updateProjectionMatrix();
+            renderer.setSize(ww, hh);
+        }
+
+        function onMouseDown(event) {
+
+            var viewportPos = $('#container').get(0).getBoundingClientRect();
+            mouse.x = ((event.clientX - viewportPos.left) / $('#container').innerWidth()) * 2 - 1;
+            mouse.y = -((event.clientY - viewportPos.top) / $('#container').innerHeight()) * 2 + 1;
+
+
+            raycaster.setFromCamera(mouse, camera);
+
+            if (chairing === true) {
+                puckchair = bulidchair();
+                chaircount++;
+            } else if (tabling === true) {
+                pucktable = bulidtable();
+                tablecount++;
+            }
+
+            if (placing === true) { // place
+                var intersects = raycaster.intersectObject(plane);
+                if (intersects.length > 0) {
+                    if (tabling === true) {
+                        var newPuck = pucktable.clone(); //makePuck();
+                        newPuck.position.copy(intersects[0].point);
+                        newPuck.position.y = 20;
+                        scene.add(newPuck);
+                        puckts.push(newPuck);
+                    } else if (chairing === true) {
+                        var newPuck = puckchair.clone(); //makePuck();
+                        newPuck.position.copy(intersects[0].point);
+                        newPuck.position.y = 10;
+                        scene.add(newPuck);
+                        puckcs.push(newPuck);
+                    }
+                }
+            } else if (deleting === true) {
+                var intersectst = raycaster.intersectObjects(puckts); //table
+                var intersectsc = raycaster.intersectObjects(puckcs); //chair
+                console.log(intersectst);
+                console.log(intersectsc);
+                if (tabling === true) {
+                    thePuckt = intersectst[0].object;
+                    thePuckt.removeFromParent();
+
+                    // remove thePuck from puckts
+                    for (let i = 0; i < puckts.length; i++) {
+                        if (puckts[i] === thePuckt) {
+                            puckts.splice(i, 6);
+                            break;
+                        }
+                    }
+                }
+                if (chairing === true) {
+                    thePuckc = intersectsc[0].object;
+                    thePuckc.removeFromParent();
+
+                    // remove thePuck from puckcs
+                    for (let i = 0; i < puckcs.length; i++) {
+                        if (puckcs[i] === thePuckc) {
+                            puckcs.splice(i, 5);
+                            break;
+                        }
+                    }
+                }
+            } else if (moving === true) { // move
+                var intersectst = raycaster.intersectObjects(puckts); //table
+                var intersectsc = raycaster.intersectObjects(puckcs); //chair
+                if (intersectst.length > 0 || intersectsc > 0) {
+                    thePuckc = intersectsc[0].object;
+                    thePuckt = intersectst[0].object;
+                }
+
+            }
+
+
+        }
+
+        function onMouseUp(event) {
+            thePuckc = null;
+            thePuckt = null
+            controls.enabled = true;
+            if (puckcs.length === 0 && puckts === 0) {
+                placing = true;
+                deleting = false;
+                moving = false;
+                $('#placing').prop('checked', true);
+                // https://stackoverflow.com/questions/15044340/jquery-set-checkbox-checked
+            }
+        }
+
+        function onMouseMove(event) {
+            event.preventDefault();
+            if (thePuckt === null || thePuckc === null) return;
+
+            var viewportPos = $('#container').get(0).getBoundingClientRect();
+            mouse.x = ((event.clientX - viewportPos.left) / $('#container').innerWidth()) * 2 - 1;
+            mouse.y = -((event.clientY - viewportPos.top) / $('#container').innerHeight()) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            var intersects = raycaster.intersectObject(plane);
+            if (intersects.length > 0) {
+                controls.enabled = false; // to disable camera movement
+                /*if(intersects[0])
+                thePuckt.position.copy(intersects[0].point);
+                thePuckc.position.copy(intersects[0].point)*/
+            }
+
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            render();
+            if (tabling === true) {
+                $('#debugMsg').text('is table');
+            } else {
+                $('#debugMsg').text('is chair');
+            }
+            $('#debugMsg1').text(puckts.length + ' table & ' + puckcs.length + ' chair ' + ' pucks on plane');
+            $('#debugMsg2').text(puckts.length + ' table & ' + puckcs.length + ' chair ' + ' pucks on plane');
+
+        }
+
+        function render() {
+            renderer.render(scene, camera);
+        }
+
+    </script>
+
+</body>
+
+</html>
