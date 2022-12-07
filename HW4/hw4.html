@@ -215,51 +215,121 @@
         }
 
         function bulidtable() {
+            var table = new THREE.Object3D();
+
+            let points = [];
+            points.push(new THREE.Vector3(15, 22, 15), //0
+                new THREE.Vector3(15, 22, -15), //1
+                new THREE.Vector3(-15, 22, -15), //2
+                new THREE.Vector3(-15, 22, 15), //3
+                new THREE.Vector3(15, 20, 15), //4
+                new THREE.Vector3(15, 20, 14), //5
+                new THREE.Vector3(15, 20, -14), //6
+                new THREE.Vector3(15, 20, -15), //7
+                new THREE.Vector3(14, 20, -15), //8
+                new THREE.Vector3(-14, 20, -15), //9
+                new THREE.Vector3(-15, 20, -15), //10
+                new THREE.Vector3(-15, 20, -14), //11
+                new THREE.Vector3(-15, 20, 14), //12
+                new THREE.Vector3(-15, 20, 15), //13
+                new THREE.Vector3(-14, 20, 15),//14
+                new THREE.Vector3(14, 20, 15), //15
+                new THREE.Vector3(14, 20, 14), //16
+                new THREE.Vector3(14, 20, -14), //17
+                new THREE.Vector3(-14, 20, -14), //18
+                new THREE.Vector3(-14, 20, 14), //19
+                new THREE.Vector3(15, 0, 15), //20
+                new THREE.Vector3(15, 0, 14), //21
+                new THREE.Vector3(15, 0, -14), //22
+                new THREE.Vector3(15, 0, -15), //23
+                new THREE.Vector3(14, 0, -15), //24
+                new THREE.Vector3(-14, 0, -15), //25
+                new THREE.Vector3(-15, 0, -15), //26
+                new THREE.Vector3(-15, 0, -14), //27
+                new THREE.Vector3(-15, 0, 14), //28
+                new THREE.Vector3(-15, 0, 15), //29
+                new THREE.Vector3(-14, 0, 15),//30
+                new THREE.Vector3(14, 0, 15), //31
+                new THREE.Vector3(14, 0, 14), //32
+                new THREE.Vector3(14, 0, -14), //33
+                new THREE.Vector3(-14, 0, -14), //34
+                new THREE.Vector3(-14, 0, 14)); //35
+
+            var geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+            let indices = [];
+            indices.push(0, 1, 2, 0, 2, 3, 0, 4, 7, 0, 7, 1, 1, 7, 10, 2, 1, 10, 2, 10, 13, 2, 13, 3, 0, 13, 4, 3, 13, 0, 4, 13, 7, 7, 13, 10, 15, 31, 20, 15, 20, 4, 4, 20, 21, 21, 5, 4, 5, 21, 32, 16, 5, 32, 15, 32, 31, 15, 16, 32, 32, 20, 31, 20, 32, 21, 17, 33, 22, 17, 22, 6, 6, 22, 23, 6, 23, 7, 17, 23, 24, 17, 7, 23, 17, 24, 33, 17, 8, 24, 22, 33, 23, 23, 33, 24, 11, 27, 34, 11, 34, 18, 18, 34, 25, 9, 18, 25, 9, 25, 26, 10, 9, 26, 11, 26, 27, 11, 10, 26, 34, 27, 25, 25, 27, 26, 13, 29, 30, 13, 30, 14, 14, 30, 35, 14, 35, 19, 19, 35, 28, 12, 19, 28, 13, 28, 29, 13, 12, 28, 30, 29, 35, 35, 29, 28);
+            geometry.setIndex(indices);
+
+            geometry.computeBoundingSphere();
+            geometry.computeVertexNormals();
+
             var loader = new THREE.TextureLoader();
             var Map = loader.load('https://i.imgur.com/Wz0uVBt.png');
-            var tableGroup = new THREE.Group();
-            var mesh = new THREE.MeshBasicMaterial({
+            let mesh = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
                 map: Map
-            });
-            var base = new THREE.Mesh(new THREE.BoxGeometry(30, 2, 30), mesh);
-            var foot1 = new THREE.Mesh(new THREE.BoxGeometry(1, 20, 1), mesh);
-            var foot2 = new THREE.Mesh(new THREE.BoxGeometry(1, 20, 1), mesh);
-            var foot3 = new THREE.Mesh(new THREE.BoxGeometry(1, 20, 1), mesh);
-            var foot4 = new THREE.Mesh(new THREE.BoxGeometry(1, 20, 1), mesh);
-            tableGroup.add(base, foot1, foot2, foot3, foot4);
-            base.position.set = (0, 21.5, 0);
-            foot1.position.set(14, 10, 14.5);
-            foot2.position.set(-14.5, 10, 14.5);
-            foot3.position.set(-14.5, 10, -14.5);
-            foot4.position.set(14.5, 10, -14.5);
-            tableGroup.rotation.x = -Math.PI;
-            return tableGroup;
+            }));
+            table.add(mesh);
+            return table;
         }
 
         function bulidchair() {
+            var chair = new THREE.Object3D();
+
+            let points = [];
+            points.push(new THREE.Vector3(5, 12, 5), //0
+                new THREE.Vector3(5, 12, -5), //1
+                new THREE.Vector3(-5, 12, -5), //2
+                new THREE.Vector3(-5, 12, 5), //3
+                new THREE.Vector3(5, 10, 5), //4
+                new THREE.Vector3(5, 10, 4), //5
+                new THREE.Vector3(5, 10, -4), //6
+                new THREE.Vector3(5, 10, -5), //7
+                new THREE.Vector3(4, 10, -5), //8
+                new THREE.Vector3(-4, 10, -5), //9
+                new THREE.Vector3(-5, 10, -5), //10
+                new THREE.Vector3(-5, 10, -4), //11
+                new THREE.Vector3(-5, 10, 4), //12
+                new THREE.Vector3(-5, 10, 5), //13
+                new THREE.Vector3(-4, 10, 5),//14
+                new THREE.Vector3(4, 10, 5), //15
+                new THREE.Vector3(4, 10, 4), //16
+                new THREE.Vector3(4, 10, -4), //17
+                new THREE.Vector3(-4, 10, -4), //18
+                new THREE.Vector3(-4, 10, 4), //19
+                new THREE.Vector3(5, 0, 5), //20
+                new THREE.Vector3(5, 0, 4), //21
+                new THREE.Vector3(5, 0, -4), //22
+                new THREE.Vector3(5, 0, -5), //23
+                new THREE.Vector3(4, 0, -5), //24
+                new THREE.Vector3(-4, 0, -5), //25
+                new THREE.Vector3(-5, 0, -5), //26
+                new THREE.Vector3(-5, 0, -4), //27
+                new THREE.Vector3(-5, 0, 4), //28
+                new THREE.Vector3(-5, 0, 5), //29
+                new THREE.Vector3(-4, 0, 5),//30
+                new THREE.Vector3(4, 0, 5), //31
+                new THREE.Vector3(4, 0, 4), //32
+                new THREE.Vector3(4, 0, -4), //33
+                new THREE.Vector3(-4, 0, -4), //34
+                new THREE.Vector3(-4, 0, 4)); //35
+
+            var geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+            let indices = [];
+            indices.push(0, 1, 2, 0, 2, 3, 0, 4, 7, 0, 7, 1, 1, 7, 10, 2, 1, 10, 2, 10, 13, 2, 13, 3, 0, 13, 4, 3, 13, 0, 4, 13, 7, 7, 13, 10, 15, 31, 20, 15, 20, 4, 4, 20, 21, 21, 5, 4, 5, 21, 32, 16, 5, 32, 15, 32, 31, 15, 16, 32, 32, 20, 31, 20, 32, 21, 17, 33, 22, 17, 22, 6, 6, 22, 23, 6, 23, 7, 17, 23, 24, 17, 7, 23, 17, 24, 33, 17, 8, 24, 22, 33, 23, 23, 33, 24, 11, 27, 34, 11, 34, 18, 18, 34, 25, 9, 18, 25, 9, 25, 26, 10, 9, 26, 11, 26, 27, 11, 10, 26, 34, 27, 25, 25, 27, 26, 13, 29, 30, 13, 30, 14, 14, 30, 35, 14, 35, 19, 19, 35, 28, 12, 19, 28, 13, 28, 29, 13, 12, 28, 30, 29, 35, 35, 29, 28);
+            geometry.setIndex(indices);
+
+            geometry.computeBoundingSphere();
+            geometry.computeVertexNormals();
+
             var loader = new THREE.TextureLoader();
             var Map = loader.load('https://i.imgur.com/1Wm9iUF.png');
-            var chairGroup = new THREE.Group();
-            var mesh = new THREE.MeshBasicMaterial({
+            let mesh = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
                 map: Map
-            });
-            var base = new THREE.Mesh(new THREE.BoxGeometry(10, 2, 10), mesh);
-            var foot1 = new THREE.Mesh(new THREE.BoxGeometry(1, 10, 1), mesh);
-            var foot2 = new THREE.Mesh(new THREE.BoxGeometry(1, 10, 1), mesh);
-            var foot3 = new THREE.Mesh(new THREE.BoxGeometry(1, 10, 1), mesh);
-            var foot4 = new THREE.Mesh(new THREE.BoxGeometry(1, 10, 1), mesh);
-            var box = new THREE.Mesh(new THREE.BoxGeometry(10, 12, 10), new THREE.MeshNormalMaterial({
-                wireframe: true
             }));
-            chairGroup.add(box, base, foot1, foot2, foot3, foot4);
-            box.position.set(0, 6, 0);
-            base.position.set = (0, 11, 0);
-            foot1.position.set(4.5, 5, 4.5);
-            foot2.position.set(-4.5, 5, 4.5);
-            foot3.position.set(-4.5, 5, -4.5);
-            foot4.position.set(4.5, 5, -4.5);
-            chairGroup.rotation.x = -Math.PI;
-            return chairGroup;
+            chair.add(mesh);
+            return chair;
         }
 
         function bulidfloor() {
@@ -329,8 +399,7 @@
             } else if (deleting === true) {
                 var intersectst = raycaster.intersectObjects(puckts); //table
                 var intersectsc = raycaster.intersectObjects(puckcs); //chair
-                console.log(intersectst);
-                console.log(intersectsc);
+
                 if (tabling === true) {
                     thePuckt = intersectst[0].object;
                     thePuckt.removeFromParent();
@@ -338,7 +407,7 @@
                     // remove thePuck from puckts
                     for (let i = 0; i < puckts.length; i++) {
                         if (puckts[i] === thePuckt) {
-                            puckts.splice(i, 6);
+                            puckts.splice(i, 1);
                             break;
                         }
                     }
@@ -358,10 +427,12 @@
             } else if (moving === true) { // move
                 var intersectst = raycaster.intersectObjects(puckts); //table
                 var intersectsc = raycaster.intersectObjects(puckcs); //chair
-                if (intersectst.length > 0 || intersectsc > 0) {
-                    thePuckc = intersectsc[0].object;
+                if (intersectst[0].object != null) {
                     thePuckt = intersectst[0].object;
                 }
+                /*if(intersectsc[0].object != null){
+                    thePuckc = intersectsc[0].object;
+                }*/
 
             }
 
@@ -370,7 +441,7 @@
 
         function onMouseUp(event) {
             thePuckc = null;
-            thePuckt = null
+            thePuckt = null;
             controls.enabled = true;
             if (puckcs.length === 0 && puckts === 0) {
                 placing = true;
@@ -382,6 +453,7 @@
         }
 
         function onMouseMove(event) {
+
             event.preventDefault();
             if (thePuckt === null || thePuckc === null) return;
 
