@@ -17,10 +17,12 @@
 </div>
 
 <div style="width:30vw; float:left; margin:10px;background-color:Plum">
-        <input type=radio class='cclass' id='tabling' name='c' value='table' checked> table <img style="height: 5vw; width: 5vw;" src="https://i.imgur.com/2JQCMLm.png"><br>
-        <input type=radio class='cclass' id='chairing' name='c' value='chair'> chair <img style="height: 5vw; width: 5vw;" src="https://i.imgur.com/yIIug3c.png"><br>
-        <p id='debugMsg'>
-      </p>
+    <input type=radio class='cclass' id='tabling' name='c' value='table' checked> table <img
+        style="height: 5vw; width: 5vw;" src="https://i.imgur.com/2JQCMLm.png"><br>
+    <input type=radio class='cclass' id='chairing' name='c' value='chair'> chair <img style="height: 5vw; width: 5vw;"
+        src="https://i.imgur.com/yIIug3c.png"><br>
+    <p id='debugMsg'>
+    </p>
 </div>
 
 <div style="width:30vw; float:left; margin:10px;background-color:Lime">
@@ -68,10 +70,10 @@
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script>
         var scene, renderer, camera;
-        var plane, chairpuck, tablepuck, tablecount = 0, chaircount = 0;
+        var plane, chairpuck, tablepuck;
         var mouse = new THREE.Vector2();
         var raycaster = new THREE.Raycaster();
-        var placing = true,
+        var place = true,
             deleting = false,
             moving = false;
         var tabling = true,
@@ -97,15 +99,15 @@
 
         $('.gclass').click(function () {
             if ($(this).val() === 'place') { // place
-                placing = true;
+                place = true;
                 deleting = false;
                 moving = false;
             } else if ($(this).val() === 'delete') { // delete
-                placing = false;
+                place = false;
                 deleting = true;
                 moving = false;
             } else if ($(this).val() === 'move') { // move
-                placing = false;
+                place = false;
                 deleting = false;
                 moving = true;
             }
@@ -137,10 +139,6 @@
             })
 
             pucks = [];
-            placing = true;
-            deleting = false;
-            moving = false;
-            $('#placing').prop('checked', true);
         });
 
         $('#restore').click(function () {
@@ -181,7 +179,8 @@
 
             controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-
+            chairpuck = buildchair(); // modified
+            tablepuck = buildtable(); // modified
             // build an invisible plane, overlapping the grid
             plane = bulidfloor();
             plane.rotation.x = -Math.PI / 2;
@@ -196,7 +195,7 @@
         }
 
         function buildtable() {
-            var table = new THREE.Object3D();
+            //var table = new THREE.Object3D();   // modified
 
             let points = [];
             points.push(new THREE.Vector3(15, 22, 15), //0
@@ -250,12 +249,12 @@
             let mesh = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
                 map: Map
             }));
-            table.add(mesh);
-            return table;
+
+            return mesh;
         }
 
         function buildchair() {
-            var chair = new THREE.Object3D();
+            //var chair = new THREE.Object3D();  // modified
 
             let points = [];
             points.push(new THREE.Vector3(5, 12, 5), //0
@@ -309,8 +308,8 @@
             let mesh = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
                 map: Map
             }));
-            chair.add(mesh);
-            return chair;
+
+            return mesh;
         }
 
         function bulidfloor() {
@@ -355,41 +354,40 @@
             chairpuck = buildchair();
             tablepuck = buildtable();
 
-            if (placing === true) { // place
+            if (place === true) { // place
                 var intersects = raycaster.intersectObject(plane);
                 if (intersects.length > 0) {
                     if (chairing === true) {
                         var newPuck = chairpuck;
                         newPuck.position.copy(intersects[0].point);
-                        newPuck.name = 'c' + chaircount;
+                        newPuck.name = 'c';
                         scene.add(newPuck);
                         pucks.push(newPuck);
-                        chaircount++;
                     } else if (tabling === true) {
+
                         var newPuck = tablepuck;
                         newPuck.position.copy(intersects[0].point);
-                        newPuck.name = 't' + tablecount;
+                        newPuck.name = 't';
                         scene.add(newPuck);
                         pucks.push(newPuck);
-                        tablecount++;
                     }
                 }
             } else if (deleting === true) {
                 var intersects = raycaster.intersectObjects(pucks);
                 if (intersects.length > 0) {
                     thePuck = intersects[0].object;
+                    thePuck.removeFromParent();
 
                     // remove thePuck from pucks
                     for (let i = 0; i < pucks.length; i++) {
-                        console.log(pucks[i].name);
-                        console.log(thePuck.name);
+                        console.log(pucks[i] === thePuck);
                         if (pucks[i] === thePuck) {
                             console.log('do');
                             pucks.splice(i, 1);
                             break;
                         }
                     }
-                    thePuck.removeFromParent();
+                    console.log(pucks.length);
                 }
             } else if (moving === true) { // move
                 var intersects = raycaster.intersectObjects(pucks);
@@ -409,7 +407,7 @@
             }
             if (deleting === true) {
                 if (pucks.length === 0) {
-                    placing = true;
+                    place = true;
                     deleting = false;
                     moving = false;
                     $('#placing').prop('checked', true);
@@ -445,8 +443,8 @@
             } else {
                 $('#debugMsg').text('is chair');
             }
-            //$('#debugMsg1').text(pucks.length + ' pucks on plane');
-            //$('#debugMsg2').text(pucks.length + ' pucks on plane');
+            $('#debugMsg1').text(pucks.length + ' pucks on plane');
+            $('#debugMsg2').text(pucks.length + ' pucks on plane');
 
         }
 
