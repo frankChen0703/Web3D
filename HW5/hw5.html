@@ -19,7 +19,9 @@
     <br>
     <br>
     <br>
-    <input type='text' id='state'>
+    <input type='text' id='state1'>
+    <br>
+    <input type='text' id='state2'>
     <br>
     <button id='sp'> Start/Pause </button>
 </div>
@@ -34,11 +36,20 @@
         color: #ffff00
     }
 
-    #state {
+    #state1 {
         border-color: #FFFFFF;
         border-width: 3px;
         border-style: solid;
         padding: 5px;
+        color: #000000;
+    }
+
+    #state2 {
+        border-color: #FFFFFF;
+        border-width: 3px;
+        border-style: solid;
+        padding: 5px;
+        color: #FF0000;
     }
 
     #sp {
@@ -67,14 +78,17 @@
     <script>
         var camera, scene, renderer;
         var circle, pos, vel, hinder, plane;
-        var rad = 10, lenght = 45 ,wight = 20;
+        var rad = 10, lenght = 45, wight = 20;
         var mouse = new THREE.Vector2();
         var raycaster = new THREE.Raycaster();
         var thebox = null;
         var stopping = false;
         var vx = 0, vy = 0;
-        var check;
+        var check, check2, check3, check4;
         var cx, cy, r, min0, min1, max0, max1;
+        var h1;//more hinder
+        var min2, min3;
+        var max2, max3;
 
         init();
         animate();
@@ -82,7 +96,7 @@
         $('#radius').change(function () {
             rad = ($(this).val()) / 100;
             scene.remove(circle);
-            circle = bulidcircle(rad, 'yellow');
+            circle = bulidcircle(rad, 'cyan');
             r = rad;
             scene.add(circle);
         })
@@ -135,17 +149,32 @@
             }));
             scene.add(border);
 
-            circle = bulidcircle(rad, 'yellow');
+            circle = bulidcircle(rad, 'cyan');
             cx = 0;
             cy = 0;
-            r = rad; 
+            r = rad;
             scene.add(circle);
-            hinder = bulidbox(lenght,wight);
-            min0 = -lenght/2;
-            min1 = -wight/2;
-            max0 = lenght/2;
-            max1 = wight/2;
-            scene.add(hinder);
+            hinder = bulidbox(lenght, wight);
+            hinder.position.set(-50, -50, 0)
+            min0 = -50 - lenght / 2;
+            min1 = -50 - wight / 2;
+            max0 = -50 + lenght / 2;
+            max1 = -50 + wight / 2;
+            /*console.log (min0);
+            console.log (min1);
+            console.log (max0);
+            console.log (max1);*/
+            h1 = bulidbox(wight, lenght);
+            h1.position.set(50, 50, 0);
+            min2 = 50 - wight / 2;
+            min3 = 50 - lenght / 2;
+            max2 = 50 + wight / 2;
+            max3 = 50 + lenght / 2;
+            //console.log (min2);
+            //console.log (min3);
+            //console.log (max2);
+            //console.log (max3);
+            scene.add(hinder, h1);
 
             pos = new THREE.Vector3();
             vel = new THREE.Vector3(10, 20);
@@ -196,10 +225,10 @@
             var intersect = raycaster.intersectObject(plane);
             if (intersect.length > 0 && thebox != null) {
                 thebox.position.copy(intersect[0].point);
-                min0 = hinder.position.x - lenght/2;
-                min1 = hinder.position.y - wight/2;
-                max0 = hinder.position.x + lenght/2;
-                max1 = hinder.position.y + wight/2;
+                min0 = hinder.position.x - lenght / 2;
+                min1 = hinder.position.y - wight / 2;
+                max0 = hinder.position.x + lenght / 2;
+                max1 = hinder.position.y + wight / 2;
 
             }
         }
@@ -212,9 +241,9 @@
             return circle
         }
 
-        function bulidbox(l,w) {
+        function bulidbox(l, w) {
             var box = new THREE.Mesh(new THREE.BoxGeometry(l, w, 1), new THREE.MeshBasicMaterial({
-                color: '#EA0000'
+                color: '#B7FF4A'
             }));
             return box;
         }
@@ -222,13 +251,21 @@
         function getPos() {
             // Call api 
             // Need to be replaced by a public ip address
-  
+
             $.get("http://127.0.0.1:1337/api?cx=" + cx + '&cy=' + cy + '&r=' + r + '&min0=' + min0 + '&min1=' + min1 + '&max0=' + max0 + '&max1=' + max1, function (data) {
                 if (data && data.output) {
                     var coords = data.output.split(" ");
                     check = coords;
                 }
             });
+            
+            $.get("http://127.0.0.1:1337/api?cx=" + cx + '&cy=' + cy + '&r=' + r + '&min0=' + min2 + '&min1=' + min3 + '&max0=' + max2 + '&max1=' + max3, function (data) {
+                if (data && data.output) {
+                    var coords = data.output.split(" ");
+                    check2 = coords;
+                }
+            });
+
         }
 
         function animate() {
@@ -264,15 +301,16 @@
             getPos();
 
             //console.log (check);
-            if (check == 1) {
+            if (check == 1 || check2 == 1) {
                 circle.material.color.set('red');
-                $('#state').val("Collision!");
+                $('#state2').val("Collision!");
+                $('#state1').val(" ");
             }
-            else if(check == 0){
+            else if (check == 0 && check2 == 0) {
                 circle.material.color.set('cyan');
-                $('#state').val("not Collision!");
+                $('#state1').val("not Collision!");
+                $('#state2').val(" ");
             }
-
             circle.position.copy(pos);
 
         }
